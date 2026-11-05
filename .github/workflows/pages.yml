@@ -1,0 +1,75 @@
+# Deploys the landing page (main) plus the four prototype branches to GitHub Pages:
+#   /          ← main          (landing page)
+#   /novel/    ← branch novel
+#   /walker/   ← branch walker
+#   /catcher/  ← branch catcher
+#   /mix/      ← branch mix
+#
+# This same file is committed on all five branches. GitHub runs the workflow version that
+# lives on the pushed branch, so a push to any prototype branch rebuilds the whole site.
+# The build always takes the landing page from `main` and each game from its own branch,
+# so the copies never need to differ.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, novel, walker, catcher, mix]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main (landing page)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: site
+
+      - name: Add each prototype branch as a sub-folder
+        working-directory: site
+        run: |
+          set -eu
+          for b in novel walker catcher mix; do
+            if git fetch --depth 1 origin "refs/heads/$b:refs/remotes/origin/$b" 2>/dev/null; then
+              mkdir -p "$b"
+              git archive "origin/$b" | tar -x -C "$b"
+              # never publish the spec, the plan or the reference photo
+              rm -rf "$b/.github" "$b/reference" "$b/preview" "$b"/*.md
+              echo "added /$b/ from branch $b"
+            else
+              echo "branch $b does not exist yet, skipping"
+            fi
+          done
+          rm -rf .git .github reference preview ./*.md
+          touch .nojekyll
+          echo "--- site tree ---"; find . -maxdepth 2 -type d | sort
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

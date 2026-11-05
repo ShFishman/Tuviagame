@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Tuvia art preview</title>
+<style>
+  body { font-family: sans-serif; background: #f3ead8; margin: 16px; }
+  h2 { margin: 18px 0 6px; font-size: 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cell { background: #fff; border-radius: 8px; padding: 6px; text-align: center; font-size: 12px; }
+</style>
+</head>
+<body>
+<h2>Expressions (listen pose)</h2><div class="row" id="expr"></div>
+<h2>Poses × disguises</h2><div class="row" id="poses"></div>
+<h2>HUD head crops</h2><div class="row" id="heads"></div>
+<h2>Goat</h2><div class="row" id="goat"></div>
+<script type="module">
+import { tuviaSVG, goatSVG, TUVIA_CSS } from '../js/art/tuvia.js';
+const st = document.createElement('style'); st.textContent = TUVIA_CSS; document.head.appendChild(st);
+const cell = (svg, label) => `<div class="cell">${svg}<div>${label}</div></div>`;
+const E = ['smirk','suspicious','delighted','disgusted','shocked','writing','sleepy','happy','angry','neutral'];
+document.getElementById('expr').innerHTML = E.map(e => cell(tuviaSVG({ expression: e, size: 180 }), e)).join('');
+let p = '';
+for (const pose of ['stand','write','listen']) for (const d of ['none','tobi','bneibrak','guest'])
+  p += cell(tuviaSVG({ pose, disguise: d, size: 170, expression: pose === 'write' ? 'writing' : 'smirk' }), pose + ' / ' + d);
+document.getElementById('poses').innerHTML = p;
+document.getElementById('heads').innerHTML = E.map(e => cell(tuviaSVG({ expression: e, crop: 'head', size: 90 }), e)).join('') + ['tobi','bneibrak'].map(d => cell(tuviaSVG({ disguise: d, crop: 'head', size: 90 }), d)).join('');
+document.getElementById('goat').innerHTML = ['disappointed','smiling','shocked'].map(m => cell(goatSVG({ mood: m, size: 160 }), m)).join('') + cell(goatSVG({ flip: true, size: 160 }), 'flip');
+</script>
+</body>
+</html>
