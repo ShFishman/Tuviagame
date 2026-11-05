@@ -522,9 +522,11 @@ export function createLevel({ stage, chapter, audio, hooks = {} }) {
     // phases + events
     while (phaseIdx + 1 < L.phases.length && elapsed >= L.phases[phaseIdx + 1].t) enterPhase(phaseIdx + 1);
     for (const ev of L.events) if (!eventsDone.has(ev) && elapsed >= ev.t) { eventsDone.add(ev); runEvent(ev); }
-    if (elapsed >= L.duration) return finish();
+    const overtime = elapsed >= L.duration;
+    // the clock waits for an ingredient, the final cholent or a quiz answer that is still in the air
+    if (overtime && !items.some((it) => it.kind === 'ingredient' || it.kind === 'cholent' || it.kind === 'answer')) return finish();
     // spawning
-    if (phase) {
+    if (phase && !overtime) {
       let rate = phase.rate;
       const d = L.disguises && L.disguises[tuvia.dis];
       if (d && d.double) rate *= 1.4;
@@ -532,7 +534,7 @@ export function createLevel({ stage, chapter, audio, hooks = {} }) {
       spawnAcc += rate * dt;
       while (spawnAcc >= 1) { spawnAcc -= 1; spawnFood(weightedPick(currentWeights()), { from: phase.from === 'all' && phase.side ? pick([phase.side, phase.from]) : phase.from, zigzag: Math.random() < .12 }); }
     }
-    if (t >= nextQuoteT && quoteIdx < quotes.length) { nextQuoteT = t + rnd(10, 15); const q = quotes[quoteIdx++]; spawnBubble('quote', { ...q, label: '📖 ' + ((CAST[q.who] && CAST[q.who].name) || q.who) }); }
+    if (!overtime && t >= nextQuoteT && quoteIdx < quotes.length) { nextQuoteT = t + rnd(10, 15); const q = quotes[quoteIdx++]; spawnBubble('quote', { ...q, label: '📖 ' + ((CAST[q.who] && CAST[q.who].name) || q.who) }); }
     if (t >= nextJackpotT && jackpotIdx < jackpots.length) { nextJackpotT = t + rnd(30, 42); const j = jackpots[jackpotIdx++]; spawnBubble('jackpot', { ...j, label: '😇 שאלה תמימה' }); aside('שאלה תמימה. זהב. מהר. לפני שהיא נופלת.', 1800); }
     if (pendingDisguiseJackpot && t - disguiseSwapT > 4) { const d = pendingDisguiseJackpot; pendingDisguiseJackpot = null; if (tuvia.dis === d) spawnDisguiseJackpot(d); }
     if (t >= nextAmbientT) { nextAmbientT = t + rnd(20, 28); if (!el.aside.classList.contains('show')) aside(ambientPick(), 4200); }
@@ -747,7 +749,7 @@ export function createLevel({ stage, chapter, audio, hooks = {} }) {
     skip() { elapsed = L.duration; },
     /** test helper: jump the level clock forward (runs events/phases, no spawning avalanche) */
     seek(sec) { elapsed = Math.max(elapsed, sec); },
-    debug() { return { elapsed, phase: phase && phase.label, items: items.length, honest, politeMode, politeQuinoa, ingredientGot, goatFound, combo, bestCombo, results }; },
+    debug() { return { elapsed, phase: phase && phase.label, items: items.length, honest, politeMode, politeQuinoa, ingredientGot, ingredientSpawned, quizDone, goatFound, combo, bestCombo, results }; },
     results,
   };
   return api;

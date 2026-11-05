@@ -134,7 +134,8 @@ body.hc .balloon.halo { background: #1d1600; }
 .phone .btn.ghost { color: #ddd; }
 
 /* ---------- level ---------- */
-.screen.level { padding: 0; display: none; flex-direction: column; height: 100dvh; overflow: hidden; background: #2B1D14; }
+.screen.level { padding: 0; display: none; flex-direction: column; height: 100dvh; overflow: hidden; background: #2B1D14 radial-gradient(circle at 50% 30%, #4a3324, #1b120c 70%); align-items: center; }
+.screen.level > * { width: 100%; max-width: 920px; }
 .screen.level.active { display: flex; }
 .hud { position: relative; display: grid; grid-template-columns: 56px 1fr 44px; grid-template-areas: 'face mood pause' 'row2 row2 row2'; gap: 4px 8px; align-items: center; padding: 6px 10px 8px; background: var(--paper); border-bottom: 3px solid var(--ink); }
 .hud-face { grid-area: face; } .hud-mood { grid-area: mood; min-width: 0; } #btn-pause { grid-area: pause; }
@@ -172,7 +173,7 @@ body.hc .balloon.halo { background: #1d1600; }
 
 /* overlays inside the stage */
 .aside-cloud, .tuvia-say, .verdict, .combo, .exchange, .tip, .phase-label, .polite-meter, .npc-bubble, .center-msg, .overflow-badge { position: absolute; opacity: 0; transition: opacity .25s, transform .25s; }
-.aside-cloud { right: 50%; transform: translateX(50%) translateY(6px); bottom: 300px; max-width: min(360px, 88%); background: rgba(255,255,255,.96); border: 2.5px dashed var(--ink-soft); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; padding: 12px 20px; font-family: var(--hand); font-size: 20px; line-height: 1.3; color: var(--ink); text-align: center; }
+.aside-cloud { right: 50%; transform: translateX(50%) translateY(6px); bottom: 215px; max-width: min(360px, 88%); background: rgba(255,255,255,.96); border: 2.5px dashed var(--ink-soft); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; padding: 12px 20px; font-family: var(--hand); font-size: 20px; line-height: 1.3; color: var(--ink); text-align: center; }
 .aside-cloud.show { opacity: 1; transform: translateX(50%) translateY(0); }
 .tuvia-say { left: 50%; transform: translateX(-50%); bottom: 236px; background: #fff; border: 2.5px solid var(--ink); border-radius: 14px; padding: 6px 12px; font-size: 15px; font-weight: 600; }
 .tuvia-say.show { opacity: 1; }
@@ -281,7 +282,7 @@ body.hc .balloon.halo { background: #1d1600; }
   .balloon { font-size: 18px; } .cloud { font-size: 24px; }
   .hud { grid-template-columns: 56px 300px 1fr 44px; grid-template-areas: 'face mood row2 pause'; }
   .hud-row2 { justify-content: flex-end; gap: 18px; }
-  .aside-cloud { bottom: 320px; font-size: 22px; }
+  .aside-cloud { bottom: 225px; font-size: 22px; }
   .verdict { font-size: 15px; }
 }
-@media (max-height: 640px) { .aside-cloud { bottom: 230px; } .tuvia-say { bottom: 200px; } }
+@media (max-height: 640px) { .aside-cloud { bottom: 190px; } .tuvia-say { bottom: 180px; } }

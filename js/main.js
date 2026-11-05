@@ -176,7 +176,7 @@ function endGame(id) {
   const scr = $('#ending-screen'); scr.className = `screen active ending-${id} ${e.horror ? 'horror' : ''}`;
   $('#ending-title').textContent = e.icon + ' ' + e.title;
   $('#ending-book').innerHTML = `<div class="book"><div class="book-title">${e.bookTitle}</div><div class="book-author">טוביה טננבום</div><div class="book-tuvia">${tuviaSVG({ pose: 'listen', expression: e.mood, crop: 'bust', size: 120, table: false, id: 'book' })}</div></div>`;
-  $('#ending-stats').innerHTML = `📖 ${frac(S.state.pages, S.BOOK_TARGET)} עמודים · 🥄 ${frac(S.sliceIngredientCount(), 3)} מרכיבים · 🍲 מצב רוח <bdi>${S.state.mood}</bdi> · 📱 איזי ${frac(S.state.isiCalled.length, 3)} · 🐐 עזים ${frac(S.state.goatsFound.length, 3)} · 😇 נימוס <bdi>${S.state.politeBad}</bdi>`;
+  $('#ending-stats').innerHTML = `📖 ${frac(S.state.pages, S.BOOK_TARGET)} עמודים · 🥄 ${frac(S.sliceIngredientCount(), 3)} מרכיבים · 🍲 מצב רוח <bdi>${S.state.mood}</bdi> · 📱 איזי ${frac(S.state.isiCalled.length, 4)} · 🐐 עזים ${frac(S.state.goatsFound.length, 4)} · 😇 נימוס <bdi>${S.state.politeBad}</bdi>`;
   if (e.horror) { audio.stopMusic(); audio.playSfx('drumroll'); setTimeout(() => audio.playSfx('gasp'), 900); }
   else if (id === 'bestseller' || id === 'secret') { audio.playMusic('bneibrak'); audio.playSfx('choir'); }
   else if (id === 'huff') { audio.playMusic('airport'); audio.sting('bad'); }
