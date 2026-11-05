@@ -8,7 +8,8 @@
  *   tuviaSVG({ expression, pose, disguise, crop, size, id, className, table })
  *     expression: smirk (default) | suspicious | delighted | disgusted | shocked | writing |
  *                 sleepy | happy | angry | neutral
- *     pose:       listen (chin on fist, at a table) | stand (notebook + cola zero) | write
+ *     pose:       listen (chin on fist, at a table) | stand (notebook + cola zero) | write |
+ *                 plate (catcher: both arms forward, hands open; the game draws the plate between them)
  *     disguise:   none | tobi (Tyrolean hat + lederhosen straps) | bneibrak (tiny black hat,
  *                 kippah, black jacket) | guest (napkin + fork)
  *     crop:       full | bust | head
@@ -330,6 +331,15 @@ function armsBack(pose, id, disguise) {
     s += limb(178, 194, 196, 236, 30, `url(#${P})`); s += cuff(196, 238, P);
     s += limb(196, 238, 192, 272, 22, C.skin); s += watch(196, 238, 192, 272, .55);
     s += hand(192, 278, 12); s += notebook(188, 270, -12);
+  } else if (pose === 'plate') {
+    // both arms forward and down, elbows out, open hands at the plate rim (y ≈ 262)
+    s += limb(62, 194, 30, 232, 30, `url(#${P})`); s += cuff(30, 234, P);
+    s += limb(30, 234, 56, 262, 22, C.skin); s += `<path d="M 36 246 q 10 -2 18 2" fill="none" stroke="${C.gold}" stroke-width="3" stroke-dasharray="2 2"/>`;
+    s += hand(60, 264, 13);
+    s += limb(178, 194, 210, 232, 30, `url(#${P})`); s += cuff(210, 234, P);
+    s += limb(210, 234, 184, 262, 22, C.skin); s += watch(210, 234, 184, 262, .5);
+    s += hand(180, 264, 13);
+    if (disguise === 'guest') s += fork(196, 250, 30);
   } else if (pose === 'write') {
     s += limb(178, 194, 202, 232, 30, `url(#${P})`); s += cuff(204, 234, P);
     s += limb(204, 234, 156, 240, 22, C.skin); s += watch(204, 234, 156, 240, .5);

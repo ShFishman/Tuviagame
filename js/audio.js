@@ -453,7 +453,7 @@ export const LOCATIONS = ['airport', 'telaviv', 'settlement', 'bneibrak', 'ramal
 /** All procedural SFX names (what playSfx accepts). */
 export const SFX_NAMES = [
   'burp', 'nu', 'sigh', 'crunch', 'slurp', 'fizz', 'scribble', 'phone', 'goat', 'gasp', 'page',
-  'click', 'pop', 'tada', 'boo', 'thud', 'cheer', 'zzz', 'ding', 'whoosh', 'cash', 'honk', 'drumroll', 'choir',
+  'click', 'pop', 'tada', 'boo', 'thud', 'cheer', 'zzz', 'ding', 'whoosh', 'cash', 'honk', 'drumroll', 'choir', 'tiktok',
 ];
 
 /** Cue names (what cue accepts). */
@@ -1005,6 +1005,14 @@ export const SFX = {
   },
 
   ding(ctx, dest, t) { INSTRUMENTS.chime(ctx, dest, { f: 1320, t, dur: 0.6, vel: 1, bend: null }); },
+  /** The "kosher" phone ringing with a social-media jingle: bouncy square-wave hook + a sub thump. (catcher branch) */
+  tiktok(ctx, dest, t) {
+    const notes = [880, 1174, 880, 1318, 1174, 1568];
+    notes.forEach((f, i) => {
+      INSTRUMENTS.glockenspiel(ctx, dest, { f, t: t + i * 0.11, dur: 0.14, vel: 0.9, bend: null });
+      if (i % 2 === 0) thump(ctx, dest, t + i * 0.11, 0.9, 160, 60, 0.12, 0.6);
+    });
+  },
 
   /** Whoosh: bandpass noise sweeping up then down. */
   whoosh(ctx, dest, t) {

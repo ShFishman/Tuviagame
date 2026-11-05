@@ -2,109 +2,154 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>טוביה אוכל את הארץ</title>
-<meta name="description" content="משחק מעריצים על טוביה טננבום: עיתונאי אחד, פנקס אחד, הרבה צ'ולנט. ארבעה אבות-טיפוס לבחירה.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>טוביה אוכל את הארץ · התפיסה</title>
+<meta name="description" content="ארקייד: אוכל נופל מהשמיים. טוב: תופסים. רע: זזים הצידה. משחק מעריצים על טוביה טננבום.">
+<meta name="theme-color" content="#2B1D14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Secular+One&family=Gveret+Levin+AlefAlefAlef&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Secular+One&family=Gveret+Levin+AlefAlefAlef&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='18' cy='32' r='12' fill='none' stroke='%23C0262D' stroke-width='6'/%3E%3Ccircle cx='46' cy='32' r='12' fill='none' stroke='%23C0262D' stroke-width='6'/%3E%3Cpath d='M30 30q2-4 4 0' stroke='%23C0262D' stroke-width='4' fill='none'/%3E%3C/svg%3E">
 </head>
 <body>
-<header class="hero">
-  <div class="hero-art" id="hero-art" aria-hidden="true"></div>
-  <div class="hero-text">
-    <p class="kicker">משחק מעריצים · ארבעה אבות-טיפוס · עברית</p>
-    <h1>טוביה אוכל את הארץ</h1>
-    <p class="quote">"באתי לארץ הקודש להבין את הסכסוך. במקום זה הבנתי את הצ'ולנט."<br><span class="sig">— טוביה (גרסת המשחק)</span></p>
-    <p class="lede">טוביה נוחת בארץ עם פנקס, משקפיים אדומים, שלייקעס ירוקות ודדליין. המו"ל רוצה ספר. טוביה רוצה צ'ולנט. הוא שואל את כולם שאלות תמימות, שהן לא תמימות בכלל. האנשים שופכים את הלב. וגם את האוכל. <strong>האוכל מספר לטוביה את האמת שהאנשים לא.</strong></p>
-    <div class="meters" aria-hidden="true">
-      <span>🍲 מצב רוח</span><span>📖 עמודים לספר</span><span>🥄 רמזים לצ'ולנט</span><span>🎭 תחפושות</span>
+<div id="app">
+
+  <!-- TITLE -->
+  <section class="screen title active" data-screen="title">
+    <a class="back-link" href="../">← חזרה לתפריט</a>
+    <button class="icon-btn mute" id="btn-mute" aria-label="השתק">🔊</button>
+    <div class="title-inner">
+      <div id="title-art" class="title-art"></div>
+      <div class="title-text">
+        <p class="kicker">אב-טיפוס · ארקייד · התפיסה</p>
+        <h1>טוביה אוכל<br>את הארץ</h1>
+        <p class="tagline">אוכל נופל מהשמיים. טוב: תופסים. רע: זזים הצידה.<br>בדיוק כמו המזרח התיכון. רק עם צלחת.</p>
+        <div class="title-btns">
+          <button class="btn primary big" id="btn-start">התחל 🍲</button>
+          <button class="btn big" id="btn-continue" hidden>המשך ▶</button>
+          <button class="btn" id="btn-chapters">פרקים</button>
+          <button class="btn" id="btn-notebook">📖 הפנקס</button>
+          <button class="btn" id="btn-settings">⚙ הגדרות</button>
+        </div>
+      </div>
     </div>
-  </div>
-</header>
-
-<main>
-  <h2 class="choose">ארבע דרכים לאכול את הארץ. תבחרו אחת. או את כולן. אני לא שופט. אני רעב.</h2>
-  <section class="cards">
-    <article class="card" data-game="novel">
-      <div class="card-art" data-pose="listen" data-expr="smirk"></div>
-      <div class="card-body">
-        <h3>הראיונות <span class="tag">novel</span></h3>
-        <p class="desc">רומן ויזואלי. אני יושב. הם מדברים. אני רושם. ככה כתבתי את כל הספרים. ככה גם פה. שאלה תמימה אחת, והאיש מספר לי על סבתא שלו.</p>
-        <ul class="feats"><li>עצי דיאלוג מלאים</li><li>פנקס עם הערות שוליים</li><li>תחפושות ושיחות עם איזי</li></ul>
-        <a class="play" href="novel/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="walker">
-      <div class="card-art" data-pose="stand" data-expr="suspicious"></div>
-      <div class="card-body">
-        <h3>ההליכה <span class="tag">walker</span></h3>
-        <p class="desc">מבט מלמעלה. הולכים ברחוב, פוגשים אנשים, בורחים ממגש קינואה, רודפים אחרי קוגל. בכל מפה מסתתרים מרכיב אחד ועז אחת.</p>
-        <ul class="feats"><li>מפות: שדה תעופה, גבעה, בני ברק</li><li>חצים או ג'ויסטיק בנייד</li><li>מתנחלים רודפים עם מגשים</li></ul>
-        <a class="play" href="walker/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="catcher">
-      <div class="card-art" data-pose="stand" data-expr="delighted"></div>
-      <div class="card-body">
-        <h3>התפיסה <span class="tag">catcher</span></h3>
-        <p class="desc">ארקייד. אוכל נופל מהשמיים. טוב: תופסים. רע: זזים הצידה. בדיוק כמו המזרח התיכון, רק עם צלחת. בבני ברק יורד גשם של קולה זירו.</p>
-        <ul class="feats"><li>שמונה דקות של רפלקסים</li><li>ציטוטים זהב נופלים מהר</li><li>צופיה זורקת ב-7/8</li></ul>
-        <a class="play" href="catcher/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="mix">
-      <div class="card-art" data-pose="write" data-expr="writing"></div>
-      <div class="card-body">
-        <h3>הקוקטייל <span class="tag">mix</span></h3>
-        <p class="desc">סיפור קצר, ואז מיני-משחק. לארוז מזוודה עם סיר. ללעוס קינואה בקצב בלקני. להסתכל לעז בעיניים בלי למצמץ. לעבור את מבחן הרבנית.</p>
-        <ul class="feats"><li>שישה מיני-משחקים</li><li>בדיקה ביטחונית בסגנון טטריס</li><li>קידוש ספיד</li></ul>
-        <a class="play" href="mix/">שחק ›</a>
-      </div>
-    </article>
-  </section>
-
-  <section class="rules">
-    <h2>חוקי המשחק (וגם של החיים)</h2>
-    <div class="rules-grid">
-      <div><b>🍲 מצב רוח.</b> מתחיל ב-60: "עייף מהטיסה, אבל עם תקווה". צ'ולנט מעלה. קינואה מורידה. אפס: טוביה חוזר לניו יורק בכעס.</div>
-      <div><b>📖 עמודים לספר.</b> כל ציטוט שמישהו לא התכוון להגיד שווה עמודים. 300 עמודים זה ספר. 30 מהם על קוגל.</div>
-      <div><b>🥄 הצ'ולנט המושלם.</b> בכל פרק מסתתר מרכיב אחד, ותמיד אצל מי שלא הייתם מצפים. הצ'ולנט המושלם צריך את כולם.</div>
-      <div><b>🎭 תחפושות.</b> "טובי הגרמני" שומע דברים שאף אחד לא יגיד ליהודי. "טוביה מבני ברק" מקבל מנה כפולה. המשקפיים האדומים נשארים. תמיד.</div>
+    <div class="gallery-wrap">
+      <h2>סופים שראיתם</h2>
+      <div id="endings-gallery" class="endings-gallery"></div>
+    </div>
+    <div class="title-foot">
+      <div id="title-goat" class="title-goat" aria-hidden="true"></div>
+      <p>משחק מעריצים לא רשמי. כל הטקסטים מקוריים. אף עז לא נפגעה. קינואה כן.</p>
     </div>
   </section>
-</main>
 
-<footer>
-  <div class="goat" id="goat" title="העז" aria-label="העז" role="button" tabindex="0"></div>
-  <p id="goat-line" class="goat-line" aria-live="polite"></p>
-  <p>משחק מעריצים לא רשמי. כל הטקסטים מקוריים. דמויות ציבוריות מופיעות כפרודיה בלבד, בשמות משונים, ונלעגות רק על עמדות והרגלים ציבוריים. אף עז לא נפגעה.</p>
-  <p class="small">מקור: <a href="https://github.com/shfishman/tuviagame">github.com/shfishman/tuviagame</a> · המפרט המלא ב-SPEC.md</p>
-</footer>
+  <!-- CHAPTERS -->
+  <section class="screen menu" data-screen="chapters">
+    <h2>פרקים</h2>
+    <div id="chapter-list" class="chapter-list"></div>
+    <p id="chapter-line" class="handwriting line"></p>
+    <button class="btn ghost btn-back">‹ חזרה</button>
+  </section>
 
-<script type="module">
-  import { tuviaSVG, goatSVG, TUVIA_CSS } from './js/art/tuvia.js';
-  const st = document.createElement('style'); st.textContent = TUVIA_CSS; document.head.appendChild(st);
-  document.getElementById('hero-art').innerHTML = tuviaSVG({ pose: 'listen', expression: 'smirk', size: 360, id: 'hero' });
-  document.querySelectorAll('.card-art').forEach((el, i) => {
-    el.innerHTML = tuviaSVG({ pose: el.dataset.pose, expression: el.dataset.expr, size: 200, crop: 'bust', id: 'card' + i, table: false });
-  });
-  // the goat: silently disappointed, even here
-  const goat = document.getElementById('goat');
-  goat.innerHTML = goatSVG({ size: 110 });
-  const lines = ['מעניין.', 'העז מסתכלת עליי. אני מסתכל על העז. שנינו יודעים את האמת.', 'היא לא מאוכזבת ממך. היא מאוכזבת מכולם.', 'נו.', 'גם בעמוד הראשי. גם פה היא הגיעה.', 'אני לא אוכל עז. אני גם לא אוכל קינואה. יש לי עקרונות.'];
-  let n = 0;
-  const poke = () => { document.getElementById('goat-line').textContent = '💭 ' + lines[n++ % lines.length]; goat.classList.add('poked'); setTimeout(() => goat.classList.remove('poked'), 400); };
-  goat.addEventListener('click', poke);
-  goat.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke(); } });
-  // hero: he laughs when you hover him
-  const hero = document.getElementById('hero-art');
-  hero.addEventListener('pointerenter', () => { const s = hero.querySelector('svg'); s.classList.add('anim-laugh', 'anim-glint'); setTimeout(() => s.classList.remove('anim-laugh', 'anim-glint'), 1400); });
-</script>
+  <!-- TITLE CARD -->
+  <section class="screen title-card" id="title-card" data-screen="titlecard">
+    <div class="tc-inner">
+      <p id="tc-num" class="tc-num"></p>
+      <h2 id="tc-title" class="tc-title handwriting"></h2>
+      <p id="tc-sub" class="tc-sub handwriting"></p>
+      <div id="tc-art" class="tc-art"></div>
+      <p id="tc-caption" class="tc-caption"></p>
+      <p class="tc-hint">(לחצו להמשך)</p>
+    </div>
+  </section>
+
+  <!-- COMIC -->
+  <section class="screen comic" data-screen="comic">
+    <div class="comic-head"><span id="comic-title"></span></div>
+    <div id="comic-box" class="comic-box"></div>
+  </section>
+
+  <!-- LEVEL -->
+  <section class="screen level" data-screen="level">
+    <div class="hud">
+      <div id="hud-face" class="hud-face" aria-hidden="true"></div>
+      <div class="hud-mood">
+        <div class="mood-row"><span>🍲</span><div class="bar"><i id="hud-mood-bar"></i></div><b id="hud-mood-num">60</b></div>
+        <span id="hud-mood-label" class="mood-label">מעניין.</span>
+      </div>
+      <button class="icon-btn" id="btn-pause" aria-label="השהה">⏸</button>
+      <div class="hud-row2">
+        <div class="hud-pages">📖 <b id="hud-pages">0</b><small>/100</small></div>
+        <div id="hud-ing" class="hud-ing" title="רמזים לצ'ולנט"></div>
+        <div class="hud-inv"><button class="inv" id="btn-can" title="קולה זירו (+20)">🥤<b id="hud-cans">0</b></button><button class="inv" id="btn-rug" title="רוגעלך (+5)">🥐<b id="hud-rug">0</b></button></div>
+      </div>
+      <div class="hud-time"><i id="hud-time"></i></div>
+    </div>
+    <div id="stage" class="stage"></div>
+    <div class="touch-bar">
+      <button class="tbtn" id="btn-disguise">🎭 <span id="hud-dis">טוביה</span></button>
+      <button class="tbtn complain" id="btn-complain" hidden>🗯 להתלונן</button>
+      <span class="keys-hint">← → לזוז · רווח תחפושת · <bdi>C</bdi> להתלונן · <bdi>Esc</bdi> השהיה</span>
+    </div>
+    <div id="pause-menu" class="pause-menu">
+      <div class="pause-box">
+        <h2>הפסקה</h2>
+        <p class="handwriting">💭 גם בהפסקה אני רעב.</p>
+        <button class="btn primary" id="btn-resume">המשך ▶</button>
+        <button class="btn" id="btn-pause-isi">📱 להתקשר לאיזי</button>
+        <button class="btn" id="btn-pause-notebook">📖 הפנקס</button>
+        <button class="btn" id="btn-restart">↻ להתחיל את השלב מחדש</button>
+        <button class="btn ghost" id="btn-quit">לתפריט הראשי</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAXI -->
+  <section class="screen taxi" data-screen="taxi">
+    <div class="taxi-inner">
+      <div class="taxi-row"><div id="taxi-moshe" class="taxi-moshe"></div><div id="taxi-art" class="taxi-art"></div></div>
+      <div class="marquee" aria-live="off"><div id="taxi-marquee" class="marquee-track"></div></div>
+      <div class="taxi-meter">המונה: <b id="taxi-meter">0</b> ₪</div>
+      <p id="taxi-aside" class="handwriting line"></p>
+      <button class="btn primary big" id="btn-taxi">הגענו ›</button>
+    </div>
+  </section>
+
+  <!-- NOTEBOOK -->
+  <section class="screen notebook" data-screen="notebook">
+    <div class="nb-head"><h2>📖 הפנקס</h2><span id="nb-count"></span></div>
+    <div id="notebook-pages" class="notebook-pages"></div>
+    <div class="nb-bar"><button class="btn primary" id="nb-back-level" hidden>חזרה למשחק ▶</button><button class="btn ghost btn-back">‹ לתפריט</button></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="screen menu" data-screen="settings">
+    <h2>⚙ הגדרות</h2>
+    <label class="set">מהירות טקסט <input id="set-speed" type="range" min="0.5" max="3" step="0.25"></label>
+    <label class="set">עוצמת שמע <input id="set-vol" type="range" min="0" max="1" step="0.05"></label>
+    <label class="set chk"><input id="set-mute" type="checkbox"> השתקה</label>
+    <label class="set chk"><input id="set-hc" type="checkbox"> תיבת דיאלוג בניגודיות גבוהה</label>
+    <div class="set wipe"><button class="btn ghost" id="btn-wipe">למחוק שמירה וסופים</button><span id="wipe-msg" class="handwriting"></span></div>
+    <button class="btn ghost btn-back">‹ חזרה</button>
+  </section>
+
+  <!-- ENDING -->
+  <section class="screen ending" id="ending-screen" data-screen="ending">
+    <h2 id="ending-title" class="ending-title"></h2>
+    <div class="ending-row">
+      <div id="ending-book" class="ending-book"></div>
+      <div id="ending-goat" class="ending-goat"></div>
+    </div>
+    <div id="ending-box" class="comic-box ending-box"></div>
+    <p id="ending-stats" class="ending-stats"></p>
+    <div id="ending-actions" class="ending-actions">
+      <button class="btn primary big" id="btn-ending-title">לתפריט הראשי</button>
+      <button class="btn" id="btn-ending-notebook">📖 הפנקס</button>
+    </div>
+  </section>
+
+</div>
+<script type="module" src="./js/main.js"></script>
 </body>
 </html>
