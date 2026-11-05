@@ -1,60 +1,90 @@
-# טוביה אוכל את הארץ — Tuviagame
+# טוביה אוכל את הארץ — `walker` (top-down walk & meet)
 
-A funny Hebrew (RTL) browser fan game about Tuvia Tenenbom: one journalist, one notebook, a lot of cholent.
-**[SPEC.md](SPEC.md)** is the full game design and the source of truth.
+The **walker** prototype of the Tuvia Tenenbom fan game (SPEC §9.2): walk a top-down Tuvia around small
+tile maps, bump into people, get fed, get quotes, find the hidden ingredient and the goat, take Moshe's taxi
+to the next chapter. Hebrew, RTL, mobile-first, plain static files, no build step.
+
+**[SPEC.md](SPEC.md)** is the source of truth. This README documents the walker's deliberate adaptations.
 
 ## Play
 
-The site is deployed with GitHub Pages: `https://<user>.github.io/Tuviagame/`
-
-| Path | Branch | Prototype |
-|---|---|---|
-| `/` | `main` | Landing page (this branch) |
-| `/novel/` | `novel` | Visual-novel interviews |
-| `/walker/` | `walker` | Top-down walk & meet |
-| `/catcher/` | `catcher` | Arcade food-catcher |
-| `/mix/` | `mix` | Story + minigames |
-
-Each prototype is **fully independent code** on its own branch, with the game at the branch root
-(`index.html`). All four currently ship the *vertical slice* from SPEC §9.5: title screen, chapter 1
-(Ben Gurion), chapter 3 (the settlement), chapter 4 (Bnei Brak), a slice finale and the endings.
-
-## Run locally
-
-No build step. Any static server works, for example from a branch root:
-
 ```bash
 python3 -m http.server 8000
+# open http://localhost:8000/   (ES modules need http://, not file://)
 ```
 
-then open `http://localhost:8000/`. (ES modules need http://, not file://.)
+Deployed under a sub-folder by the shared Pages workflow (`/walker/`); every path in the game is relative.
 
-## Deployment
+**Controls.** Arrows / WASD walk · `E` / Enter / Space talk or advance · `1–4` pick a choice · `Q` swap
+disguise · `N` notebook · `P` call Isi · `M` mute · Esc settings. On touch devices: a virtual joystick in the
+bottom-left corner (away from the dialogue) and a big action button bottom-right; tap the dialogue box to advance.
 
-`.github/workflows/pages.yml` builds one site from five branches: it checks out `main` for the root
-and `git archive`s each existing prototype branch into its sub-folder, then uploads with
-`actions/upload-pages-artifact` and deploys with `actions/deploy-pages`.
+## The slice (SPEC §9.5), scaled
 
-GitHub runs the workflow file from the branch that was pushed, so **the same workflow file is
-committed on every branch**. A push to any of `main`, `novel`, `walker`, `catcher`, `mix` rebuilds
-the whole site. The build strips `SPEC.md`, `PLAN.md`, `reference/` and `preview/` from the published
-site, so the reference photo is never published.
+| | |
+|---|---|
+| Chapters | 1 בן גוריון → (3 הגבעה, 4 בני ברק in any order) → finale שולחן שבת. Chapters 2, 5, 6, 7 appear on the world map as locked pins with a Tuvia one-liner ("בקרוב"). |
+| Ingredients | **3**: הסיר (Shira, only when Tuvia answers honestly as himself), השעועית (Tzofia's garden, after one plate of quinoa eaten politely), הקישקע (Rebbetzin Gittel: the 3-question quiz, or the Bnei Brak disguise). The HUD shows all 7 slots; 4 are greyed "בקרוב". |
+| Book | **100 pages** = a book (1/3 of SPEC's 300). Chapters yield roughly 35–60 pages each. |
+| Mood | 0–100, starts at 60, 5 face bands from `tuviaSVG` head crops, drifts −1 per 20 s of walking ("רעב"), −2 for a scene without food. Pages are multiplied ×0.5 under 20 and ×1.5 at 80+. Bnei Brak lifts the cap to 120 ("שיכור מקוגל"). Mood 0 with no Coke Zero = the huff ending; a can in the pocket saves him once (+20). |
+| Endings | 🥤 חזרה לניו יורק בכעס (mood 0) · 🥗 טוביה הבריא (≥5 bad foods eaten) · 📘 רב-מכר (≥100 pages, 3/3, mood ≥40) · 📗 ספר בינוני (≥100 pages, <3) · 📕 אין ספר (<100) · 💌 סוף סודי (Isi called in all 3 chapters + goat found in all 3 + 3/3 ingredients). The title screen shows the endings gallery with silhouettes and hints. |
 
-First-time setup: the workflow calls `actions/configure-pages` with `enablement: true`, which turns
-Pages on with the "GitHub Actions" source. If the repository settings block that, enable it once by
-hand: *Settings → Pages → Build and deployment → Source: GitHub Actions*.
+Every chapter has a handwriting title card with an establishing shot (a snapshot of the map), one Isi call
+(hint + dry line), innocent-question 😇 jackpots, disguise 🎭 jackpots, an ingredient, human moments, a hidden
+goat and the SPEC §4 foods with their exact verdict lines.
 
-## Shared starting assets on `main`
+### Walker-specific features
+- **NPCs chase to feed you.** Tzofia roams the hilltop with a quinoa tray (avoid; a catch = a choice: eat politely
+  or refuse). Rebbetzin Gittel chases with kugel (seek; every catch is +mood). Both return in the finale rush.
+- **Ambient 💭 asides** fire when walking past landmarks (every map has 9–11), when idling, when hunger ticks,
+  when swapping disguise.
+- **"!" bubbles** over the nearest NPC, a minimap in the corner, a dashed yellow taxi tile as the exit.
+- **Floor food** is eaten on contact: good plates glow warm, health food glows green (hazards), the ingredient sparkles.
+- **Finale "Shabbat rush"**: 45 seconds between the tables; plates spawn, guests heckle when bumped, Tzofia and
+  Gittel chase; then the cholent reveal (full or partial) and the ending.
+- Moshe's taxi links chapters; his Middle East lecture continues ride by ride (Abraham → 1948 → 1967 → 2025, free ride).
 
-- `js/art/tuvia.js`: the Tuvia caricature (SVG string builder: 10 expressions, 3 poses, 4 disguises)
-  and the goat. Drawn from SPEC §2.3 and `reference/tuvia.png`. Each prototype branch carries its own
-  copy and may change it.
-- `js/audio.js`: the procedural Web Audio music and SFX engine from SPEC §8 (location themes, adaptive
-  mood layers, stings, SFX, mp3 hook). Same deal: copied per branch.
-- `preview/`: dev-only preview pages for the art and the audio (not deployed).
+## Files (SPEC §10.2)
+
+```
+index.html            screens + HUD + dialogue box + modals
+css/style.css
+js/main.js            boot, screen flow, game loop, input, effects, window.__tuvia
+js/state.js           meters, inventory, notebook, flags, save/load, endings
+js/world.js           tile engine: collision, NPC AI (wander / chase / seat), camera, render, minimap, rush
+js/dialogue.js        dialogue runner (typewriter, choices, 💭 asides, <bdi> wrapping)
+js/ui.js              DOM: HUD, asides, toasts, notebook, phone, settings, gallery, world map, taxi, endings
+js/audio.js           shared procedural Web Audio engine (SPEC §8), used for themes, stings, SFX
+js/art/tuvia.js       shared caricature (HUD face, title, portraits, endings)
+js/art/sprites.js     procedural canvas art: top-down Tuvia (4 directions × 3 frames × 4 disguises),
+                      NPC factory with the §6.3 silhouette hooks, the goat, food icons, the tile set
+js/content/foods.js   food catalog + ingredients        js/content/maps.js   tile maps, items, landmarks, world pins
+js/content/npcs.js    the cast and all dialogue (DSL)   js/content/text.js   UI strings, asides, Isi, taxi, endings
+```
+
+All player-facing text lives under `js/content/`. Dialogue DSL: `'N: …'` NPC, `'T: …'` Tuvia, `'~ …'` 💭 aside,
+`'* …'` stage direction, `{ fx: {…} }` effects (mood, pages, food, politeFood, item, ingredient, flag, shake,
+sfx, sting, chase…), `{ pick: […] }` random line, `{ pickFlag: [flag, ifTrue, ifFalse] }`, choices with
+`kind: innocent | disguise | eat | polite` and `hideIf`. Each NPC's `entry(ctx)` picks the opening node by
+disguise, flags and how many times Tuvia has talked to them.
+
+Save: `localStorage` (`tuvia-walker-save-v1`, `tuvia-walker-meta-v1`) behind try/catch. Autosave every 10 s
+while walking, on every dialogue end and between chapters; "המשך" on the title screen.
+
+## `window.__tuvia` (automated testing)
+
+```js
+__tuvia.state            // the state API (.s is the raw state object)
+__tuvia.goto('settlement' | 'bneibrak' | 'airport' | 'finale' | 'world', { resume, pos })
+__tuvia.setMood(n)  __tuvia.addPages(n)  __tuvia.giveIngredient('pot'|'beans'|'kishke')
+__tuvia.talk(npcId, nodeId?)  __tuvia.advance()  __tuvia.choose(i)  __tuvia.skip()
+__tuvia.teleport(tileX, tileY)  __tuvia.disguise('none'|'tobi'|'bneibrak'|'guest')  __tuvia.callIsi()
+__tuvia.markIsi()  __tuvia.markGoat()  __tuvia.leave()  __tuvia.toWorld()  __tuvia.endRush()
+__tuvia.endGame(endingId?)  __tuvia.autosave()  __tuvia.boot()
+__tuvia.world  __tuvia.dialogue  __tuvia.ui  __tuvia.audio  __tuvia.MAPS  __tuvia.NPCS  __tuvia.FOODS
+```
 
 ## Content rules
-
-- Tuvia's reference photo is a drawing reference only. It is never embedded in a game.
-- Public figures appear only as renamed parodies, mocked for public positions and habits only.
-- All text is original, written in Tuvia's voice (SPEC §1.4).
+- The reference photo is a drawing reference only; it is never embedded. Tuvia is the SVG/canvas caricature.
+- All text is original, in Tuvia's voice (SPEC §1.4). Everyone gets roasted and everyone gets a human moment.
+- No public figures are needed in the slice.
