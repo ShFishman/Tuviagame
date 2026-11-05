@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>טוביה — בדיקת סאונד</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #fdf6e3; --ink: #2b2118; --accent: #c1440e; --card: #fff8e6; --line: #e4d4b5; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; font-family: Rubik, system-ui, sans-serif; background: var(--bg); color: var(--ink); max-width: 820px; margin-inline: auto; }
+  h1 { font-family: 'Secular One', Rubik, sans-serif; color: var(--accent); margin: 0 0 4px; font-size: 1.8rem; }
+  p.sub { margin: 0 0 16px; color: #6b5a48; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+  h2 { font-size: 1.05rem; margin: 0 0 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  button { font: inherit; font-size: 0.95rem; padding: 8px 14px; border-radius: 999px; border: 1px solid #b89a6a; background: #fff; color: var(--ink); cursor: pointer; }
+  button:hover { background: #fff1cf; }
+  button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.wide { flex: 1 1 140px; }
+  label { display: flex; align-items: center; gap: 10px; }
+  input[type=range] { flex: 1; }
+  #beat { font-family: monospace; direction: ltr; text-align: left; background: #2b2118; color: #ffe8b0; padding: 8px 10px; border-radius: 8px; min-height: 2.4em; white-space: pre; }
+  .dots { display: flex; gap: 6px; direction: ltr; margin-top: 6px; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: #d8c8a8; transition: background 60ms; }
+  .dot.on { background: var(--accent); }
+  .dot.group { box-shadow: inset 0 0 0 2px #8a6b3a; }
+  small { color: #7a6a58; }
+</style>
+</head>
+<body>
+<h1>טוביה אוכל את הארץ — בדיקת מוזיקה וסאונד</h1>
+<p class="sub">הכול פרוצדורלי (Web Audio), בלי דגימות. לחץ על משהו כדי להעיר את הסאונד.</p>
+
+<section>
+  <h2>🎵 נושאים לפי מקום</h2>
+  <div class="row" id="themes"></div>
+  <div class="row" style="margin-top:8px">
+    <button id="stop">⏹ עצור מוזיקה</button>
+    <button id="mute">🔇 השתק</button>
+  </div>
+</section>
+
+<section>
+  <h2>🍲 מצב רוח (שכבות אדפטיביות)</h2>
+  <label>מצב רוח: <bdi id="moodVal">60</bdi> <input id="mood" type="range" min="0" max="100" value="60"></label>
+  <div class="row" style="margin-top:8px">
+    <button data-mood="10">😫 10</button>
+    <button data-mood="30">😒 30</button>
+    <button data-mood="50">😐 50</button>
+    <button data-mood="70">🙂 70</button>
+    <button data-mood="90">🤤 90</button>
+  </div>
+  <label style="margin-top:10px">עוצמה: <bdi id="volVal">0.8</bdi> <input id="vol" type="range" min="0" max="1" step="0.05" value="0.8"></label>
+  <label style="margin-top:6px">קצב ×<bdi id="tempoVal">1.0</bdi> <input id="tempo" type="range" min="0.6" max="1.6" step="0.05" value="1"></label>
+</section>
+
+<section>
+  <h2>✨ סטינגים ורמזים</h2>
+  <div class="row">
+    <button id="stingGood">🎉 sting good (טה-דה)</button>
+    <button id="stingBad">💀 sting bad (דיטיון)</button>
+    <button data-cue="trombone">🎺 trombone (כנסת)</button>
+    <button data-cue="tease">🎷 tease (קלזמר בנתב"ג)</button>
+    <button data-cue="krekhts">😢 krekhts (קלרינט)</button>
+    <button data-cue="honk">🚕 honk (משה)</button>
+  </div>
+</section>
+
+<section>
+  <h2>🔊 אפקטים</h2>
+  <div class="row" id="sfx"></div>
+</section>
+
+<section>
+  <h2>🥁 קצב (getBeat / onStep) — להתנחלות ב־7/8</h2>
+  <div id="beat">—</div>
+  <div class="dots" id="dots"></div>
+  <small>הנקודות מראות את השמינית הנוכחית; הקבוצות 2+2+3 מסומנות במסגרת.</small>
+</section>
+
+<script type="module">
+  import { createAudio } from '../js/audio.js';
+  const audio = createAudio({ basePath: '../audio/' });
+  window.audio = audio; // for tests / console poking
+
+  const HE = {
+    airport: 'נתב"ג (מוזאק)', telaviv: 'תל אביב (לאונג\')', settlement: 'התנחלות (בלקן 7/8)', bneibrak: 'בני ברק (קלזמר)',
+    ramallah: 'רמאללה (מקאם)', knesset: 'הכנסת (מארש)', berlin: 'ברלין (אום-פה)', finale: 'פינאלה (מדלי)',
+  };
+  const themesEl = document.getElementById('themes');
+  for (const loc of audio.LOCATIONS) {
+    const b = document.createElement('button');
+    b.className = 'wide'; b.dataset.theme = loc; b.textContent = HE[loc] || loc;
+    b.onclick = () => { audio.playMusic(loc); mark(loc); };
+    themesEl.appendChild(b);
+  }
+  function mark(loc) { themesEl.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x.dataset.theme === loc)); }
+  document.getElementById('stop').onclick = () => { audio.stopMusic(); mark(null); };
+  const muteBtn = document.getElementById('mute');
+  muteBtn.onclick = () => { audio.setMuted(!audio.isMuted()); muteBtn.textContent = audio.isMuted() ? '🔊 בטל השתקה' : '🔇 השתק'; muteBtn.classList.toggle('active', audio.isMuted()); };
+
+  const mood = document.getElementById('mood'), moodVal = document.getElementById('moodVal');
+  mood.oninput = () => { moodVal.textContent = mood.value; audio.setMood(+mood.value); };
+  document.querySelectorAll('[data-mood]').forEach((b) => b.onclick = () => { mood.value = b.dataset.mood; mood.oninput(); });
+  const vol = document.getElementById('vol'), volVal = document.getElementById('volVal');
+  vol.oninput = () => { volVal.textContent = vol.value; audio.setVolume(+vol.value); };
+  const tempo = document.getElementById('tempo'), tempoVal = document.getElementById('tempoVal');
+  tempo.oninput = () => { tempoVal.textContent = (+tempo.value).toFixed(2); audio.setTempoScale(+tempo.value); };
+
+  document.getElementById('stingGood').onclick = () => audio.sting('good');
+  document.getElementById('stingBad').onclick = () => audio.sting('bad');
+  document.querySelectorAll('[data-cue]').forEach((b) => b.onclick = () => audio.cue(b.dataset.cue));
+
+  const sfxEl = document.getElementById('sfx');
+  for (const name of audio.SFX_NAMES) {
+    const b = document.createElement('button');
+    b.dataset.sfx = name; b.innerHTML = `<bdi>${name}</bdi>`;
+    b.onclick = () => audio.playSfx(name);
+    sfxEl.appendChild(b);
+  }
+
+  // Beat display: polled from getBeat() so it follows the audio clock, not the scheduler.
+  const beatEl = document.getElementById('beat'), dotsEl = document.getElementById('dots');
+  let dots = [], dotsFor = null;
+  function frame() {
+    const b = audio.getBeat();
+    if (b.playing) {
+      beatEl.textContent = `${b.location}  bar ${b.bar}  step ${b.step}/${b.stepsPerBar}  beat ${b.beat + 1}/${b.beatsPerBar}` +
+        `  bpm ${b.bpm.toFixed(1)}  next ${(b.timeToNextStep * 1000).toFixed(0)}ms` + (b.groups ? `  groups ${b.groups.join('+')}` : '');
+      const key = b.location + b.beatsPerBar;
+      if (dotsFor !== key) {
+        dotsFor = key; dotsEl.innerHTML = ''; dots = [];
+        let g = 0, acc = b.groups ? b.groups[0] : 1e9;
+        for (let i = 0; i < b.beatsPerBar; i++) {
+          const d = document.createElement('div'); d.className = 'dot';
+          if (b.groups && i === acc - b.groups[g]) d.classList.add('group');
+          if (b.groups && i === acc - 1) { g++; acc += b.groups[g] || 0; }
+          dotsEl.appendChild(d); dots.push(d);
+        }
+      }
+      dots.forEach((d, i) => d.classList.toggle('on', i === b.beat));
+    } else { beatEl.textContent = '— (אין מוזיקה)'; }
+    requestAnimationFrame(frame);
+  }
+  frame();
+</script>
+</body>
+</html>
