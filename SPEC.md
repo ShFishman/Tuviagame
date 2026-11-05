@@ -25,7 +25,7 @@ This document is the backbone of the project. It defines the tone, the character
 ## 1. Vision & Tone
 
 ### 1.1 The pitch
-Tuvia lands in Israel with a notebook, a hat and a deadline. His publisher wants a new book. Tuvia wants a good cholent. He travels from Tel Aviv to a hilltop, to Bnei Brak, to Ramallah, to the Knesset and to Berlin. He asks everyone innocent questions that are not innocent at all. People pour out their souls, and they also pour out their food. **The food tells Tuvia the truth that the people don't.**
+Tuvia lands in Israel with a notebook, red glasses, green suspenders and a deadline. His publisher wants a new book. Tuvia wants a good cholent. He travels from Tel Aviv to a hilltop, to Bnei Brak, to Ramallah, to the Knesset and to Berlin. He asks everyone innocent questions that are not innocent at all. People pour out their souls, and they also pour out their food. **The food tells Tuvia the truth that the people don't.**
 
 ### 1.2 The comedic engine
 1. **The innocent question.** Tuvia asks something a child would ask ("ומי זה הפלסטינים?", "למה יש פה כל כך הרבה דגלים של האיחוד האירופי?"). The NPC answers at length and reveals more than they meant to. Tuvia writes it down.
@@ -37,7 +37,7 @@ Tuvia lands in Israel with a notebook, a hat and a deadline. His publisher wants
 - **Punch at hypocrisy, not at identity.** Mock what people *do* and *say*: European-funded activists who've never visited the place they're "saving", politicians who shout and do nothing, settlers who preach about gluten and the Land of Israel in the same breath, Haredim with a smartphone hidden inside a "kosher" phone case. Never mock what people *are*.
 - **Every NPC gets one "human moment"**: a line or gesture that makes the player like them. Noa from the NGO really cares. Elyashiv the settler gives his coat to a stranger. Hans the German official is ashamed of his grandfather and doesn't know what to do with it. The Ramallah host feeds Tuvia like a mother.
 - **Tuvia is roasted too.** He is gluttonous, grumpy, vain about his books and terrified of kale. The joke is on him at least as often as on others.
-- **Original text only.** Every line is written fresh "in his style". No passages copied from his books. Short nods and references for fans are welcome (Tobi the German, the hat, Isi, "I'm just a simple journalist").
+- **Original text only.** Every line is written fresh "in his style". No passages copied from his books. Short nods and references for fans are welcome (Tobi the German, the red glasses, Isi, "I'm just a simple journalist").
 - **Public-figure parodies:** slightly altered names. Mocked only for public positions, speeches and habits (a politician who never stops talking, a minister who poses for cameras). No invented crimes, nothing sexual, nothing degrading about bodies or family. Full list in §6.4, subject to user approval.
 
 ### 1.4 Tuvia's voice: writing rules for every line he says
@@ -69,23 +69,48 @@ Tuvia lands in Israel with a notebook, a hat and a deadline. His publisher wants
 | **Grumpy inner monologue** | 💭 **Aside bubbles**: thought bubbles in a different style (grey, cloud-shaped, handwritten font) that only the player sees | Constantly, including during gameplay in the arcade prototypes |
 
 ### 2.3 Visual spec (caricature)
-> **⚠️ PENDING: the user will provide a reference photo.** This section will be finalized from it. The photo goes in `reference/` and that folder is in `.gitignore`. **Never commit the photo to the public repo.**
+> Based on the user's reference photo, kept locally at `reference/tuvia.png`. The `reference/` folder is in `.gitignore`. **Never commit the photo to the public repo.** Implementers working locally may view it; cloud sessions use the description below.
 
-Rules that hold regardless of the photo:
-- **Caricature, drawn as SVG** (inline or `.svg` files), built from simple shapes: big head, small body, expressive eyebrows.
-- **Fixed signature props**, always on screen: his hat (exact style taken from the photo), his glasses, **a small notebook + pen**, and often a **can of cola zero**.
-- **Name tag**: Tuvia's name is shown on screen consistently (HUD title "טוביה", speaker label in dialogues). Nobody should confuse him with any other Haredi, rabbi or journalist caricature.
-- **NPCs never share his silhouette.** No other character gets his hat/glasses combo.
-- **Expression set** (minimum 8): neutral 😐, suspicious 🤨, delighted 🤤 (food), disgusted 🤢 (kale), shocked 😱, writing ✍️, sleepy 😴, disguised 🎭 (variant per disguise: Tobi gets a Tyrolean hat on top, and so on).
+**The look (from the photo):**
+
+| Feature | Spec | Caricature exaggeration |
+|---|---|---|
+| **Head/face** | Big, round, clean-shaven face, full cheeks with a rosy flush, small double chin | Head ≈ 40% of body height, a near-perfect circle, pink cheek blush circles |
+| **Hair** | Short, light sandy-blond / straw-colored, combed up and back, slightly tousled, a little thin on top | A soft blond tuft swept up and back like a small wave. Color `#D9C48A` with lighter highlights |
+| **Glasses ★** | **Round frames, bold red / red-tortoise rims** (dark inner edge) | **The #1 identifier.** Oversized perfect circles, thick bright red rim `#C0262D` with a dark-brown inner line. Never removed, not even in disguise |
+| **Expression** | Gentle, knowing half-smile, one side of the mouth slightly up, eyes amused and slightly narrowed | Default face = the "I know something you don't" smirk |
+| **Shirt** | Blue-and-white **vertical pinstripe** button-down, collar open with a navy collar band, **sleeves rolled up** to the elbow | Bold navy/white stripes (`#2B3A67` on white), rolled cuffs as two puffy rings |
+| **Suspenders ★** | **Mint / sage-green elastic suspenders** with silver metal clips | **The #2 identifier.** Wide mint straps `#7FBF9F` with shiny silver clips, always visible |
+| **Trousers** | Dark navy/black | Short and simple |
+| **Build** | Stocky, round belly, broad shoulders | Pear/egg-shaped torso, the suspenders curving around the belly |
+| **Accessories** | Gold wedding ring, brown leather strap watch (left wrist), thin gold chain bracelet (right wrist) | Ring and watch visible in the "thinking" pose. The ring is a nod to Isi: it glints when she calls |
+| **Signature pose** | **Chin resting on fist, elbow on the table**, leaning in, listening | **The default "interview" pose.** Used whenever an NPC speaks: Tuvia listens with chin on fist, smirking. This *is* the innocent-provocateur trait in one image |
+
+**Rules:**
+- **Caricature, drawn as SVG** (inline or `.svg` files), built from simple shapes: big round head, stocky egg-shaped body, expressive eyebrows above the red glasses.
+- **Fixed signature props**, always on screen: **red round glasses + mint suspenders + pinstripe shirt**. Add **a small notebook + pen** in hand (or in the shirt pocket) and often a **can of cola zero**.
+- **No hat.** Tuvia is bare-headed, with blond hair. Hats appear only as **disguise props** (see §2.4), and that is part of the joke.
+- **Name tag**: Tuvia's name is shown on screen consistently (HUD title "טוביה", speaker label in dialogues).
+- **NPCs never share his silhouette.** No other character has red round glasses, mint suspenders or a blue pinstripe shirt. The combination is reserved for Tuvia.
+- **Expression set** (minimum 8):
+  - smirk (default, chin on fist) 😏
+  - suspicious 🤨 (one eyebrow over the red rim)
+  - delighted 🤤 (food; glasses fog up with steam)
+  - disgusted 🤢 (kale; cheeks turn green)
+  - shocked 😱 (glasses jump off the nose)
+  - writing ✍️ (looks down at the notebook)
+  - sleepy 😴
+  - disguised 🎭 (one variant per disguise)
+- **Animation ideas:** suspenders "snap" when he gets excited about food, belly bounces when he laughs, glasses glint on a jackpot quote.
 
 ### 2.4 Disguises (🎭)
 
 | Disguise | Hebrew label | Look | Effect |
 |---|---|---|---|
 | **Tuvia** (himself) | טוביה, עיתונאי מניו יורק | Default | Neutral. Israelis are suspicious of "the American journalist" |
-| **Tobi the German** | טובי הגרמני | + small Tyrolean feather on hat, says "Ja" | Europeans, NGO staff and some Ramallah officials open up completely ("finally someone who understands"). Settlers and Haredim get nervous, but feed him anyway |
-| **The boy from Bnei Brak** | טוביה מבני ברק | + peyot drawn tucked behind ears | Haredim give a double portion and ask who his father is. Tel Aviv activists get very worried |
-| **Just a guest** | אורח פשוט | Hat in hand | Hospitality boost everywhere, but fewer revealing quotes (people are polite to guests) |
+| **Tobi the German** | טובי הגרמני | + green Tyrolean hat with a feather on top of the blond hair, lederhosen straps clipped over his own suspenders, says "Ja" | Europeans, NGO staff and some Ramallah officials open up completely ("finally someone who understands"). Settlers and Haredim get nervous, but feed him anyway |
+| **The boy from Bnei Brak** | טוביה מבני ברק | + a black velvet kippah and a black hat that's too small for his head, a black jacket over the pinstripes (the mint suspenders peek out: "you're not fooling anyone") | Haredim give a double portion and ask who his father is. Tel Aviv activists get very worried |
+| **Just a guest** | אורח פשוט | Napkin tucked into the collar, fork in hand | Hospitality boost everywhere, but fewer revealing quotes (people are polite to guests) |
 
 Rules:
 - Disguise is chosen at each encounter start (novel/mix) or by a quick-swap key (walker/catcher).
@@ -518,7 +543,7 @@ All four implement §3 (mood, pages, ingredients), the §4 foods, the §5 chapte
 - **Done =** walk all maps, meet all NPCs, collect ingredients, reach endings.
 
 ### 9.3 `catcher`: arcade food-catcher
-- **Core loop:** each chapter = one **arcade level** (~3–4 min) between short comic-strip intro/outro panels with dialogue. Food falls (or is thrown by NPCs at the top of the screen). Tuvia moves left/right holding his plate/hat. **Catch good food, dodge bad food.**
+- **Core loop:** each chapter = one **arcade level** (~3–4 min) between short comic-strip intro/outro panels with dialogue. Food falls (or is thrown by NPCs at the top of the screen). Tuvia moves left/right holding his plate. **Catch good food, dodge bad food.**
 - **Mechanics:**
   - **Catch** good → mood up + combo. **Catch** bad → mood down + Tuvia's 💭 complaint pops up.
   - **Quote bubbles** fall too: catch them for 📖 pages. Some are "😇 jackpots": golden and fast.
@@ -610,7 +635,7 @@ Dialogue lives in data files (JS/JSON objects) so text can be rewritten without 
 ---
 
 ## 11. Open items
-1. **📸 Tuvia's reference photo.** The user will provide it. Finalize §2.3 (hat style, glasses, beard/no beard, clothing colors). Keep the photo in `reference/` (git-ignored).
+1. **📸 Tuvia's reference photo.** The user will provide it. ✅ Done. §2.3 was finalized from the photo, which is stored in `reference/tuvia.png` (git-ignored).
 2. **Public-figure list (§6.4).** User approves, edits or swaps for invented MKs.
 3. **Dialogue review.** User reviews sample lines for Tuvia-authenticity after the vertical slices.
 4. **Title.** Pick the final game name.
