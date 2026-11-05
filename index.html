@@ -2,109 +2,144 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>טוביה אוכל את הארץ</title>
-<meta name="description" content="משחק מעריצים על טוביה טננבום: עיתונאי אחד, פנקס אחד, הרבה צ'ולנט. ארבעה אבות-טיפוס לבחירה.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>טוביה אוכל את הארץ · הקוקטייל</title>
+<meta name="description" content="סיפור קצר, ואז מיני-משחק. משחק מעריצים על טוביה טננבום: נתב&quot;ג, גבעה, בני ברק, שולחן שבת.">
+<meta name="theme-color" content="#F6EBD6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Secular+One&family=Gveret+Levin+AlefAlefAlef&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="./css/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='18' cy='32' r='12' fill='none' stroke='%23C0262D' stroke-width='6'/%3E%3Ccircle cx='46' cy='32' r='12' fill='none' stroke='%23C0262D' stroke-width='6'/%3E%3Cpath d='M30 30q2-4 4 0' stroke='%23C0262D' stroke-width='4' fill='none'/%3E%3C/svg%3E">
 </head>
-<body>
-<header class="hero">
-  <div class="hero-art" id="hero-art" aria-hidden="true"></div>
-  <div class="hero-text">
-    <p class="kicker">משחק מעריצים · ארבעה אבות-טיפוס · עברית</p>
-    <h1>טוביה אוכל את הארץ</h1>
-    <p class="quote">"באתי לארץ הקודש להבין את הסכסוך. במקום זה הבנתי את הצ'ולנט."<br><span class="sig">— טוביה (גרסת המשחק)</span></p>
-    <p class="lede">טוביה נוחת בארץ עם פנקס, משקפיים אדומים, שלייקעס ירוקות ודדליין. המו"ל רוצה ספר. טוביה רוצה צ'ולנט. הוא שואל את כולם שאלות תמימות, שהן לא תמימות בכלל. האנשים שופכים את הלב. וגם את האוכל. <strong>האוכל מספר לטוביה את האמת שהאנשים לא.</strong></p>
-    <div class="meters" aria-hidden="true">
-      <span>🍲 מצב רוח</span><span>📖 עמודים לספר</span><span>🥄 רמזים לצ'ולנט</span><span>🎭 תחפושות</span>
+<body data-screen="title">
+<div id="app">
+
+  <!-- ===== title ===== -->
+  <section id="screen-title" class="screen on">
+    <a class="back-link" href="../">← חזרה לתפריט</a>
+    <div class="title-hero">
+      <div id="title-art" class="title-art" aria-hidden="true"></div>
+      <div class="title-text">
+        <p class="kicker">משחק מעריצים · אב-טיפוס "הקוקטייל" (mix)</p>
+        <h1>טוביה אוכל את הארץ</h1>
+        <p class="title-sub">סיפור קצר. ואז מיני-משחק. ואז עוד צלחת.</p>
+        <p id="title-quote" class="title-quote"></p>
+      </div>
     </div>
+    <div class="title-menu">
+      <button type="button" id="btn-start" class="btn btn-big btn-primary">התחל</button>
+      <button type="button" id="btn-resume" class="btn btn-big" hidden>המשך</button>
+      <div class="title-menu-row">
+        <button type="button" id="btn-notebook" class="btn btn-secondary">📓 הפנקס</button>
+        <button type="button" id="btn-settings" class="btn btn-secondary">⚙ הגדרות</button>
+      </div>
+    </div>
+    <section class="title-endings">
+      <h2>סופים שראיתי <span id="endings-count" class="pill"></span></h2>
+      <div id="endings" class="endings"></div>
+    </section>
+    <section class="title-how">
+      <h2>איך זה עובד</h2>
+      <div class="how-grid">
+        <div><b>🍲 מצב רוח.</b> מתחיל ב-<bdi>60</bdi>. קוגל מעלה. קינואה מורידה. אפס: טוביה חוזר לניו יורק. בכעס.</div>
+        <div><b>😇 שאלה תמימה.</b> נשמעת תמימה. היא לא. האיש עונה, הפנקס מתמלא, הספר נכתב. <bdi>100</bdi> עמודים בפרוסה הזאת.</div>
+        <div><b>🥄 הצ'ולנט.</b> בכל פרק מרכיב אחד, אצל מי שלא הייתם מצפים. שלושה בפרוסה. צריך את כולם.</div>
+        <div><b>🎮 מיני-משחקים.</b> לארוז מזוודה. לקטוע נהג מונית. ללעוס קינואה ב-<bdi>7/8</bdi>. לבהות בעז. מבחן. קידוש. הושבה.</div>
+      </div>
+    </section>
+    <footer class="title-foot">
+      <div id="title-goat" class="title-goat" role="button" tabindex="0" aria-label="העז"></div>
+      <p>משחק מעריצים לא רשמי. כל הטקסטים מקוריים. הסאטירה מופנית להרגלים ולעמדות, לא לזהות. אף עז לא נפגעה. קינואה כן.</p>
+    </footer>
+  </section>
+
+  <!-- ===== map ===== -->
+  <section id="screen-map" class="screen">
+    <header class="map-head">
+      <div id="map-tuvia" class="map-tuvia" aria-hidden="true"></div>
+      <div>
+        <h2>לאן, סופר?</h2>
+        <p id="map-stats" class="map-stats"></p>
+        <p class="map-hint">משה מחכה למטה עם המונה דולק. הפרקים הנעולים: "בקרוב". גם הוא לא יודע מתי.</p>
+      </div>
+    </header>
+    <div id="map-list" class="map-list"></div>
+    <div class="map-foot"><button type="button" id="map-menu" class="btn btn-secondary">← לתפריט</button></div>
+  </section>
+
+  <!-- ===== game ===== -->
+  <section id="screen-game" class="screen">
+    <div id="game">
+      <header id="hud" aria-label="מדדים">
+        <div class="hud-row">
+          <div id="hud-face" class="hud-face" aria-hidden="true"></div>
+          <div class="hud-mood">
+            <div class="hud-mood-bar"><div id="hud-mood-fill" class="hud-mood-fill"></div></div>
+            <div class="hud-mood-meta"><span id="hud-mood-num" class="hud-mood-num"></span><span id="hud-mood-text" class="hud-mood-text"></span></div>
+          </div>
+          <div id="hud-pages" class="hud-pages" title="עמודים לספר"></div>
+          <div class="hud-btns">
+            <button type="button" id="hud-isi" class="hud-btn" title="להתקשר לאיזי">📱</button>
+            <button type="button" id="hud-notebook" class="hud-btn" title="הפנקס">📓</button>
+            <button type="button" id="hud-settings" class="hud-btn" title="הגדרות">⚙</button>
+            <button type="button" id="hud-menu" class="hud-btn" title="תפריט">☰</button>
+          </div>
+        </div>
+        <div class="hud-row hud-row-2">
+          <div id="hud-ing" class="hud-ing" title="רמזים לצ'ולנט המושלם"></div>
+          <div class="hud-items">
+            <button type="button" id="hud-cola" class="hud-item" title="קולה זירו: +10"></button>
+            <button type="button" id="hud-rug" class="hud-item" title="רוגעלך: +8"></button>
+            <span id="hud-dis" class="hud-dis" title="התחפושת הנוכחית"></span>
+          </div>
+        </div>
+      </header>
+      <div id="stage" class="stage">
+        <div class="scene-bg"></div>
+        <div class="scene-npc empty"></div>
+        <div class="scene-tuvia"></div>
+        <div class="scene-aside"></div>
+        <div class="scene-caption"></div>
+      </div>
+      <div id="dialog" class="dialog">
+        <div class="dlg-box">
+          <div class="dlg-name"></div>
+          <div class="dlg-text"></div>
+          <div class="dlg-choices"></div>
+          <div class="dlg-hint">▼ הקש להמשך</div>
+        </div>
+      </div>
+      <div id="mg" class="mg" hidden></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== overlays ===== -->
+<div id="notebook" class="overlay" aria-label="הפנקס">
+  <div class="overlay-panel notebook-panel">
+    <button type="button" id="nb-close" class="overlay-close" aria-label="סגור">✕</button>
+    <div class="nb-body"></div>
   </div>
-</header>
+</div>
+<div id="settings" class="overlay" aria-label="הגדרות">
+  <div class="overlay-panel settings-panel">
+    <button type="button" id="set-close" class="overlay-close" aria-label="סגור">✕</button>
+    <h2>⚙ הגדרות</h2>
+    <div class="set-group"><span>מהירות טקסט</span><div class="set-row">
+      <button type="button" class="btn btn-small" data-speed="slow">איטי</button>
+      <button type="button" class="btn btn-small" data-speed="normal">רגיל</button>
+      <button type="button" class="btn btn-small" data-speed="fast">מהיר</button>
+      <button type="button" class="btn btn-small" data-speed="instant">מיידי</button>
+    </div></div>
+    <div class="set-group"><span>סאונד</span><div class="set-row"><button type="button" id="set-mute" class="btn btn-small">🔊 סאונד</button></div></div>
+    <div class="set-group"><span>נגישות</span><div class="set-row"><button type="button" id="set-contrast" class="btn btn-small">◐ תיבת דיאלוג בניגודיות גבוהה</button></div></div>
+    <div class="set-group"><span>שמירה</span><div class="set-row"><button type="button" id="set-wipe" class="btn btn-small btn-danger">🗑 מחק שמירה</button></div></div>
+    <p class="set-note">המוזיקה והאפקטים נוצרים בקוד (Web Audio), בלי קבצים. הסאונד מתחיל אחרי הלחיצה הראשונה.</p>
+  </div>
+</div>
+<div id="toast" class="toast" aria-live="polite"></div>
 
-<main>
-  <h2 class="choose">ארבע דרכים לאכול את הארץ. תבחרו אחת. או את כולן. אני לא שופט. אני רעב.</h2>
-  <section class="cards">
-    <article class="card" data-game="novel">
-      <div class="card-art" data-pose="listen" data-expr="smirk"></div>
-      <div class="card-body">
-        <h3>הראיונות <span class="tag">novel</span></h3>
-        <p class="desc">רומן ויזואלי. אני יושב. הם מדברים. אני רושם. ככה כתבתי את כל הספרים. ככה גם פה. שאלה תמימה אחת, והאיש מספר לי על סבתא שלו.</p>
-        <ul class="feats"><li>עצי דיאלוג מלאים</li><li>פנקס עם הערות שוליים</li><li>תחפושות ושיחות עם איזי</li></ul>
-        <a class="play" href="novel/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="walker">
-      <div class="card-art" data-pose="stand" data-expr="suspicious"></div>
-      <div class="card-body">
-        <h3>ההליכה <span class="tag">walker</span></h3>
-        <p class="desc">מבט מלמעלה. הולכים ברחוב, פוגשים אנשים, בורחים ממגש קינואה, רודפים אחרי קוגל. בכל מפה מסתתרים מרכיב אחד ועז אחת.</p>
-        <ul class="feats"><li>מפות: שדה תעופה, גבעה, בני ברק</li><li>חצים או ג'ויסטיק בנייד</li><li>מתנחלים רודפים עם מגשים</li></ul>
-        <a class="play" href="walker/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="catcher">
-      <div class="card-art" data-pose="stand" data-expr="delighted"></div>
-      <div class="card-body">
-        <h3>התפיסה <span class="tag">catcher</span></h3>
-        <p class="desc">ארקייד. אוכל נופל מהשמיים. טוב: תופסים. רע: זזים הצידה. בדיוק כמו המזרח התיכון, רק עם צלחת. בבני ברק יורד גשם של קולה זירו.</p>
-        <ul class="feats"><li>שמונה דקות של רפלקסים</li><li>ציטוטים זהב נופלים מהר</li><li>צופיה זורקת ב-7/8</li></ul>
-        <a class="play" href="catcher/">שחק ›</a>
-      </div>
-    </article>
-
-    <article class="card" data-game="mix">
-      <div class="card-art" data-pose="write" data-expr="writing"></div>
-      <div class="card-body">
-        <h3>הקוקטייל <span class="tag">mix</span></h3>
-        <p class="desc">סיפור קצר, ואז מיני-משחק. לארוז מזוודה עם סיר. ללעוס קינואה בקצב בלקני. להסתכל לעז בעיניים בלי למצמץ. לעבור את מבחן הרבנית.</p>
-        <ul class="feats"><li>שישה מיני-משחקים</li><li>בדיקה ביטחונית בסגנון טטריס</li><li>קידוש ספיד</li></ul>
-        <a class="play" href="mix/">שחק ›</a>
-      </div>
-    </article>
-  </section>
-
-  <section class="rules">
-    <h2>חוקי המשחק (וגם של החיים)</h2>
-    <div class="rules-grid">
-      <div><b>🍲 מצב רוח.</b> מתחיל ב-60: "עייף מהטיסה, אבל עם תקווה". צ'ולנט מעלה. קינואה מורידה. אפס: טוביה חוזר לניו יורק בכעס.</div>
-      <div><b>📖 עמודים לספר.</b> כל ציטוט שמישהו לא התכוון להגיד שווה עמודים. 300 עמודים זה ספר. 30 מהם על קוגל.</div>
-      <div><b>🥄 הצ'ולנט המושלם.</b> בכל פרק מסתתר מרכיב אחד, ותמיד אצל מי שלא הייתם מצפים. הצ'ולנט המושלם צריך את כולם.</div>
-      <div><b>🎭 תחפושות.</b> "טובי הגרמני" שומע דברים שאף אחד לא יגיד ליהודי. "טוביה מבני ברק" מקבל מנה כפולה. המשקפיים האדומים נשארים. תמיד.</div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="goat" id="goat" title="העז" aria-label="העז" role="button" tabindex="0"></div>
-  <p id="goat-line" class="goat-line" aria-live="polite"></p>
-  <p>משחק מעריצים לא רשמי. כל הטקסטים מקוריים. דמויות ציבוריות מופיעות כפרודיה בלבד, בשמות משונים, ונלעגות רק על עמדות והרגלים ציבוריים. אף עז לא נפגעה.</p>
-  <p class="small">מקור: <a href="https://github.com/shfishman/tuviagame">github.com/shfishman/tuviagame</a> · המפרט המלא ב-SPEC.md</p>
-</footer>
-
-<script type="module">
-  import { tuviaSVG, goatSVG, TUVIA_CSS } from './js/art/tuvia.js';
-  const st = document.createElement('style'); st.textContent = TUVIA_CSS; document.head.appendChild(st);
-  document.getElementById('hero-art').innerHTML = tuviaSVG({ pose: 'listen', expression: 'smirk', size: 360, id: 'hero' });
-  document.querySelectorAll('.card-art').forEach((el, i) => {
-    el.innerHTML = tuviaSVG({ pose: el.dataset.pose, expression: el.dataset.expr, size: 200, crop: 'bust', id: 'card' + i, table: false });
-  });
-  // the goat: silently disappointed, even here
-  const goat = document.getElementById('goat');
-  goat.innerHTML = goatSVG({ size: 110 });
-  const lines = ['מעניין.', 'העז מסתכלת עליי. אני מסתכל על העז. שנינו יודעים את האמת.', 'היא לא מאוכזבת ממך. היא מאוכזבת מכולם.', 'נו.', 'גם בעמוד הראשי. גם פה היא הגיעה.', 'אני לא אוכל עז. אני גם לא אוכל קינואה. יש לי עקרונות.'];
-  let n = 0;
-  const poke = () => { document.getElementById('goat-line').textContent = '💭 ' + lines[n++ % lines.length]; goat.classList.add('poked'); setTimeout(() => goat.classList.remove('poked'), 400); };
-  goat.addEventListener('click', poke);
-  goat.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke(); } });
-  // hero: he laughs when you hover him
-  const hero = document.getElementById('hero-art');
-  hero.addEventListener('pointerenter', () => { const s = hero.querySelector('svg'); s.classList.add('anim-laugh', 'anim-glint'); setTimeout(() => s.classList.remove('anim-laugh', 'anim-glint'), 1400); });
-</script>
+<script type="module" src="./js/main.js"></script>
 </body>
 </html>
