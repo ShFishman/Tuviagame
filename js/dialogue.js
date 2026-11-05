@@ -157,12 +157,11 @@ export function createDialogue(opts) {
     const t = resolveText(text);
     choicesEl.innerHTML = '';
     setTuvia(o.x || 'suspicious', current.pose);
-    asideEl.innerHTML = `<div class="aside-cloud"><span class="aside-icon">💭</span><span class="aside-text"></span></div>`;
+    asideEl.innerHTML = `<div class="aside-cloud"><span class="aside-icon">💭</span></div>`;
     asideEl.classList.add('on');
     dialog.classList.remove('narr', 'tuvia', 'npc'); dialog.classList.add('aside-mode');
     nameEl.textContent = '💭 טוביה (רק אתם שומעים)'; nameEl.className = 'dlg-name aside';
     await typeInto(textEl, bidi(t));
-    asideEl.querySelector('.aside-text').innerHTML = bidi(t.length > 90 ? t.slice(0, 88) + '…' : t);
     await waitTap();
     dialog.classList.remove('aside-mode');
     asideEl.classList.remove('on');

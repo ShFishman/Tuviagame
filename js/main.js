@@ -199,6 +199,7 @@ async function playChapter(id, resumeNode, token) {
   ui.clear(); ui.setNPC(null); ui.setTuvia('smirk', 'listen');
   renderHUD();
   if (!resumeNode) await titleCard(ch);
+  else state.resumeFix = true;
   let node = resumeNode && ch.nodes[resumeNode] ? resumeNode : ch.start;
   while (node) {
     if (token !== runToken) return;
@@ -234,7 +235,8 @@ async function runNode(ch, nodeId, token) {
   const node = ch.nodes[nodeId];
   if (!node) return null;
   state.node = nodeId; S.save();
-  if (node.bg) ui.setScene(node.bg, sceneOpts(ch, node.bg));
+  if (node.bg) { state.bg = node.bg; ui.setScene(node.bg, sceneOpts(ch, node.bg)); }
+  else if (!ui.current.bg || state.resumeFix) { state.resumeFix = false; ui.setScene(state.bg || ch.bg, sceneOpts(ch, state.bg || ch.bg)); }
   if ('npc' in node) ui.setNPC(node.npc, node.m);
   if (node.drift) { S.addMood(-2, { silent: true }); ui.flashMood(-2, '🍽️ רעב'); }
   for (const step of node.steps) {
@@ -263,7 +265,7 @@ function applyFx(fx, ch) {
 }
 
 async function runStep(step, ch) {
-  if (step.bg) ui.setScene(step.bg, sceneOpts(ch, step.bg));
+  if (step.bg) { state.bg = step.bg; ui.setScene(step.bg, sceneOpts(ch, step.bg)); }
   if ('npc' in step && !step.s) { ui.setNPC(step.npc, step.m); return null; }
   if (step.music !== undefined && !step.fx) audio.playMusic(step.music);
   if (step.n) { await ui.narrate(step.n); return null; }

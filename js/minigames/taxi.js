@@ -117,7 +117,7 @@ export function run(host, ctx) {
       say(f.npc, win ? 'הגענו. המונה... נו, בסדר. בשבילך.' : `הגענו. ₪${fare}. זה ההסבר. ההסבר עולה.`, 'moshe');
       ctx.audio.playSfx(win ? 'tada' : 'cash');
       const mood = clamp(Math.round((C.winFare - fare) / 10), -12, 6);
-      setTimeout(() => resolve({ win, fare, hits, misses, falses, mood, pages: hits * 2, text: C.rewardText(fare, hits) }), 1000);
+      setTimeout(() => resolve({ win, fare, hits, misses, falses, mood, pages: hits, text: C.rewardText(fare, hits) }), 1000);
     }
     ctx.control({ finish: (win) => { if (win) { fare = Math.min(fare, C.winFare - 40); hits = Math.max(hits, 4); } else fare = Math.max(fare, C.winFare + 60); finish(true); } });
     setTimeout(stream, 600);

@@ -1,60 +1,77 @@
-# טוביה אוכל את הארץ — Tuviagame
+# טוביה אוכל את הארץ — אב-טיפוס `mix` ("הקוקטייל")
 
-A funny Hebrew (RTL) browser fan game about Tuvia Tenenbom: one journalist, one notebook, a lot of cholent.
-**[SPEC.md](SPEC.md)** is the full game design and the source of truth.
+Story + minigames prototype (SPEC §9.4): short visual-novel scenes in Tuvia's voice, and a signature
+minigame (or two) per chapter that grows out of the story. Plain static HTML/CSS/ES modules, no build step.
 
-## Play
+Open `index.html` over any static server (ES modules need http). Deployed at `/mix/` by the Pages workflow;
+every path in the game is relative, so it works from any sub-folder.
 
-The site is deployed with GitHub Pages: `https://<user>.github.io/Tuviagame/`
+## The vertical slice (SPEC §9.5)
 
-| Path | Branch | Prototype |
+Title → **Chapter 1** Ben Gurion (tutorial) → Moshe's taxi → **Chapter 3** the hilltop → taxi → **Chapter 4** Bnei Brak
+→ taxi → **Finale** "שולחן שבת" → one of six endings. Chapters 2, 5, 6, 7 appear on the map as "בקרוב" with a Tuvia one-liner.
+
+| Chapter | Encounters | Minigames |
 |---|---|---|
-| `/` | `main` | Landing page (this branch) |
-| `/novel/` | `novel` | Visual-novel interviews |
-| `/walker/` | `walker` | Top-down walk & meet |
-| `/catcher/` | `catcher` | Arcade food-catcher |
-| `/mix/` | `mix` | Story + minigames |
+| 1 נתב"ג | Shira at passport control (disguise reactions, 😇 "מי צודק"), the side room, Dana at the duty free (😇 jackpot), Moshe's taxi. Hidden goat by the luggage carts. | **בדיקה ביטחונית** (pack the suitcase so the X-ray doesn't flag the pot; Tetris-like, Shira comments), **מונה המונית** (tap on "1948 / 1967 / אברהם אבינו / בקיצור" to interrupt Moshe; misses cost shekels) |
+| 3 הגבעה | Elyashiv (hug, pita confession 😇, yeshiva offer 🎭, "Europe wrote a letter to the chicken coop" 🎭), Tzofia (goat yogurt, quinoa, the gluten-free cholent event with screen shake, herbal tea, chia), Neria and his guitar, the coat at night, shakshuka at dawn. | **לבלוע קינואה** (7/8 rhythm synced to the Balkan theme via `audio.getBeat()`: chew on the 2+2+3 downbeats, hold a fake smile on the tail; 💭 screams the whole time), **עז מול טוביה** (staring contest: don't tap during the fly / Neria / chia / Isi; tap only on the blink = the chapter's goat) |
+| 4 בני ברק | The cola-crate kid, Rebbetzin Gittel ("איזה טננבוים?", "תאכל קוגל. אתה רזה.", she remembers his mother), Shmerel (army/vodka 😇, the kosher phone TikTok, 40 guests), the gabbai, Yanky and the pen, the 2 AM bakery. Goat on a pashkevil. | **מבחן הרבנית** (4 of 10 Haredi-life questions; Gittel's eyes narrow per wrong answer; pass = kishke; the Bnei Brak disguise forgives one), **קידוש ספיד** (mash the kugel before the gabbai reaches ten; Shmerel's vodka steals pieces; the count restarts at nine when the minyan is short) |
+| Finale | All eight guests arrive with their lines, the lid lift (golden light + choir at 3/3, or a "בסדר" cholent), Moshe refuses payment. | **סידור הושבה** (8 seats, 28 written pair reactions, score bands; no perfect solution) |
 
-Each prototype is **fully independent code** on its own branch, with the game at the branch root
-(`index.html`). All four currently ship the *vertical slice* from SPEC §9.5: title screen, chapter 1
-(Ben Gurion), chapter 3 (the settlement), chapter 4 (Bnei Brak), a slice finale and the endings.
+Every minigame has an instruction card in Tuvia's voice, a result card with a verdict line and mood/pages consequences, and "🔁 שוב".
+Each chapter has: a handwriting title card, an establishing shot, the 📱 Isi call (hint + a dry line, once per chapter),
+innocent-question 😇 and disguise 🎭 jackpots, the ingredient, a human moment, the hidden goat and foods with the exact SPEC §4 verdicts.
 
-## Run locally
+## Slice scaling (deliberate adaptation of SPEC §3 / §7)
 
-No build step. Any static server works, for example from a branch root:
+- **Ingredients:** 3 in the slice (הסיר from Shira when Tuvia is honest and packs the suitcase; השעועית from Tzofia after eating the whole quinoa plate politely; הקישקע from Gittel after the quiz). The HUD shows all 7 slots; 4 are locked "בקרוב".
+- **Book target:** 100 pages (= 1/3 of 300). Chapters yield roughly 25–50 pages each; mood multiplies pages (×0.5 under 20, ×1.5 at 80+).
+- **Endings** (checked in SPEC §7 order, `decideEnding()` in `js/state.js`):
+  🥤 mood 0 with no Coke Zero (a can rescues once, automatically) · 🥗 ≥5 bad foods eaten "politely" · 💌 Isi called in all 3 chapters + goat found in all 3 + 3/3 ingredients ·
+  📘 ≥100 pages + 3/3 + mood ≥40 · 📗 ≥100 pages · 📕 otherwise. The title screen shows the endings gallery with hints for locked ones.
+- Mood can exceed 100 in Bnei Brak (cap 120, "שיכור מקוגל"); it resets to 100 when the chapter ends. Mood drifts −2 on food-less scenes.
+- Save is written at every node boundary to `localStorage` (`tuvia-mix-save-v1`); settings + endings seen in `tuvia-mix-meta-v1`. Both behind try/catch.
 
-```bash
-python3 -m http.server 8000
+## Layout
+
+```
+index.html               shell: title, map, game (HUD / stage / dialog / minigame panel), overlays
+css/style.css
+js/main.js               screens, HUD, step interpreter, minigame runner, Isi phone, notebook, endings, window.__tuvia
+js/dialogue.js           presentation: scene / NPC / Tuvia, typewriter, 💭 asides, choices, cards, bidi() helper
+js/state.js              meters, inventory, notebook, save/load, endings
+js/audio.js              shared procedural Web Audio engine (unchanged; checkFiles:false so no audio/*.mp3 probes)
+js/art/tuvia.js          shared Tuvia caricature + goat (unchanged)
+js/art/npcs.js           NPC caricatures (Shira, Moshe, Elyashiv, Tzofia, Neria, Gittel incl. eye-narrowing, Shmerel, Yanky, gabbai, Dana, Isi)
+js/art/scenes.js         scene backgrounds with the hidden-goat slot
+js/content/common.js     title, chapter list, idle lines, Isi calls, Moshe's taxi rides, ending scenes
+js/content/foods.js      SPEC §4 catalog + disguises
+js/content/ch1.js ch3.js ch4.js finale.js   chapter scripts (data; step format documented at the top of js/dialogue.js)
+js/content/minigames.js  all minigame text: instructions, NPC commentary, the taxi lecture, the quiz pool, screams, seating reactions
+js/minigames/*.js        suitcase, taxi, quinoa, goat, quiz, kiddush, seating (+ common.js helpers)
 ```
 
-then open `http://localhost:8000/`. (ES modules need http://, not file://.)
+Controls: tap/click to advance, number keys for choices and cards, Space/Enter to advance. Minigames: touch + keyboard
+(arrows/Enter/R/Tab/1–7 in the suitcase; Space to interrupt / chew / tap / eat; 1–3 in the quiz; Enter to serve).
+Settings: text speed, mute (persisted), high-contrast dialogue box, wipe save.
 
-## Deployment
+## `window.__tuvia` (test API)
 
-`.github/workflows/pages.yml` builds one site from five branches: it checks out `main` for the root
-and `git archive`s each existing prototype branch into its sub-folder, then uploads with
-`actions/upload-pages-artifact` and deploys with `actions/deploy-pages`.
+| Member | Does |
+|---|---|
+| `state`, `screen`, `chapter` | live state object, current screen (`title`/`map`/`game`), current chapter id |
+| `goto(id, node?)` | jump to a chapter (`ch1`, `ch3`, `ch4`, `finale`), optionally to a node |
+| `newGame()`, `title()`, `map()` | start over / go to title / go to map |
+| `setMood(n)`, `addPages(n)`, `giveIngredient(id)`, `setDisguise(d)` | steer the meters (`pot`, `beans`, `kishke`; `none`, `tobi`, `bneibrak`, `guest`) |
+| `skip()` | finish the typewriter / advance the current line |
+| `choose(i)`, `card(idOrIndex)` | press a dialogue choice / a card button (`'eat'`, `'polite'`, `'refuse'`, `'next'`, `'again'`, a disguise id…) |
+| `mg`, `winMinigame()`, `loseMinigame()` | the running minigame controller; force a result |
+| `callIsi()`, `phoneNext()`, `findGoat()` | the chapter's Isi call / advance the phone / find the chapter's goat |
+| `save()`, `load()`, `reset()`, `decideEnding()`, `playEnding(id)` | persistence and endings |
+| `openNotebook()`, `closeNotebook()`, `busy()` | notebook overlay; whether something is waiting for input |
+| `audio`, `ui`, `S`, `CHAPTERS`, `MG`, `FOODS`, `ENDINGS` | the engines and the data |
 
-GitHub runs the workflow file from the branch that was pushed, so **the same workflow file is
-committed on every branch**. A push to any of `main`, `novel`, `walker`, `catcher`, `mix` rebuilds
-the whole site. The build strips `SPEC.md`, `PLAN.md`, `reference/` and `preview/` from the published
-site, so the reference photo is never published.
+## Verification
 
-First-time setup: the workflow calls `actions/configure-pages` with `enablement: true`, which turns
-Pages on with the "GitHub Actions" source. If the repository settings block that, enable it once by
-hand: *Settings → Pages → Build and deployment → Source: GitHub Actions*.
-
-## Shared starting assets on `main`
-
-- `js/art/tuvia.js`: the Tuvia caricature (SVG string builder: 10 expressions, 3 poses, 4 disguises)
-  and the goat. Drawn from SPEC §2.3 and `reference/tuvia.png`. Each prototype branch carries its own
-  copy and may change it.
-- `js/audio.js`: the procedural Web Audio music and SFX engine from SPEC §8 (location themes, adaptive
-  mood layers, stings, SFX, mp3 hook). Same deal: copied per branch.
-- `preview/`: dev-only preview pages for the art and the audio (not deployed).
-
-## Content rules
-
-- Tuvia's reference photo is a drawing reference only. It is never embedded in a game.
-- Public figures appear only as renamed parodies, mocked for public positions and habits only.
-- All text is original, written in Tuvia's voice (SPEC §1.4).
+Played end to end with Playwright (title → ch1 → ch3 → ch4 → finale → six endings; save → reload → המשך; notebook;
+served from `/` and from a `/mix/` sub-folder; 360 / 390 / 1280 px wide): zero console errors, zero page errors.

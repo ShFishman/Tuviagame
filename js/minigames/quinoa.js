@@ -38,7 +38,7 @@ export function run(host, ctx) {
 
     f.status.innerHTML = `<span class="mg-title">${C.icon} ${C.title}</span>`;
     const plate = el('div', 'qn-plate', `<div class="qn-plate-fill"></div><span>🥣</span>`);
-    const acc = el('div', 'qn-acc', `דיוק: <bdi>100%</bdi>`);
+    const acc = el('div', 'qn-acc', `דיוק: <bdi>—</bdi>`);
     f.status.append(plate, acc);
     say(f.npc, 'תאכל! זה מהגבעה! בקצב, בקצב!', 'tzofia');
 
@@ -113,7 +113,7 @@ export function run(host, ctx) {
           lane.appendChild(n.el);
         }
         const y = hitY - dt * SPEED;
-        n.el.style.transform = `translate(-50%, ${y - (n.kind === 'smile' ? n.dur * SPEED : 0)}px)`;
+        n.el.style.transform = `translate(-50%, ${n.kind === 'smile' ? y - n.dur * SPEED : y - 28}px)`;
         if (n.state === 'wait' && dt < -(n.kind === 'chew' ? HIT_WIN : HOLD_WIN)) judge(n, false);
         if (n.state === 'holding' && t > n.t + n.dur + 0.05) { release(); }
         if (dt < -1.2 && n.el.parentNode) { n.el.remove(); }
