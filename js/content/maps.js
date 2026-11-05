@@ -17,7 +17,7 @@ export const MAPS = {
     subtitle: '"סיבת ביקור?"',
     establishing: 'נחתתי. ארבעים מעלות. ארבעים נהגי מונית. אחד מהם יודע את שם המשפחה שלי. כמעט.',
     music: 'airport',
-    palette: { floor: '#D9D4C7', floor2: '#CBC5B5', ground: '#B9B3A3', wall: '#7C8794', wallTop: '#9BA5B1', accent: '#2B3A67', line: '#4A5260' },
+    palette: { floor: '#D9D4C7', floor2: '#CBC5B5', ground: '#B9B3A3', wall: '#7C8794', wallTop: '#9BA5B1', accent: '#2B3A67', line: '#4A5260', outside: '#4E5866' },
     start: [2, 1],
     rows: [
       '########################',
@@ -70,7 +70,7 @@ export const MAPS = {
     subtitle: '"גלוטן, גאולה וגדר"',
     establishing: 'גבעה. נוף. רוח. שלט מצויר ביד. בסוגריים כתוב "בלי גלוטן". אני קורא רק את הסוגריים.',
     music: 'settlement',
-    palette: { floor: '#C9B98A', floor2: '#B7A878', ground: '#C9B98A', wall: '#6B7A34', wallTop: '#8A9A4A', accent: '#8E3B46', line: '#4A4A2A', grass: '#9DB06A' },
+    palette: { floor: '#C9B98A', floor2: '#B7A878', ground: '#C9B98A', wall: '#6B7A34', wallTop: '#8A9A4A', accent: '#8E3B46', line: '#4A4A2A', grass: '#9DB06A', outside: '#3F4D22' },
     start: [12, 13],
     rows: [
       'bbbbbbbbbbbbbbbbbbbbbbbb',
@@ -130,7 +130,7 @@ export const MAPS = {
     subtitle: '"הביתה"',
     establishing: 'בני ברק. הריח הגיע לפני הרחוב. שתיים בלילה ויש תור למאפייה. הביתה.',
     music: 'bneibrak',
-    palette: { floor: '#CFC4B4', floor2: '#BDB2A2', ground: '#A89E8E', wall: '#5B4636', wallTop: '#7E6650', accent: '#6E1F2E', line: '#3B2A21' },
+    palette: { floor: '#CFC4B4', floor2: '#BDB2A2', ground: '#A89E8E', wall: '#5B4636', wallTop: '#7E6650', accent: '#6E1F2E', line: '#3B2A21', outside: '#3A2C21' },
     moodCap: 120,
     start: [12, 13],
     rows: [
@@ -197,7 +197,7 @@ export const MAPS = {
     subtitle: '"כולם באו. לאף אחד לא נוח."',
     establishing: 'שולחן שבת בירושלים. כולם הגיעו. לכולם לא נוח. ככה יודעים שזה שבת.',
     music: 'finale',
-    palette: { floor: '#B98C5E', floor2: '#A97C4E', ground: '#B98C5E', wall: '#5B4636', wallTop: '#7E6650', accent: '#C0262D', line: '#3B2A21', cloth: '#F6EBD6' },
+    palette: { floor: '#B98C5E', floor2: '#A97C4E', ground: '#B98C5E', wall: '#5B4636', wallTop: '#7E6650', accent: '#C0262D', line: '#3B2A21', cloth: '#F6EBD6', outside: '#3A2C21' },
     start: [10, 5],
     rows: [
       '####################',

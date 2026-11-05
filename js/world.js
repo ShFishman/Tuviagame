@@ -47,6 +47,7 @@ export function createWorld({ canvas, hooks = {} }) {
     const cssW = canvas.clientWidth || 360, cssH = canvas.clientHeight || 480;
     dpr = Math.min(3, window.devicePixelRatio || 1);
     zoom = clamp(Math.min(cssW / (13 * TILE), cssH / (9 * TILE)), 0.9, 2.0);
+    if (map) zoom = clamp(Math.max(zoom, 0.8 * cssH / (map.rows.length * TILE)), 0.9, 2.0);
     const nu = zoom * dpr;
     W = Math.round(cssW * dpr); H = Math.round(cssH * dpr);
     if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
@@ -229,7 +230,7 @@ export function createWorld({ canvas, hooks = {} }) {
     if (!map || !mapCanvas) return;
     const sx = shakeT > 0 ? (Math.random() - 0.5) * 10 * u : 0, sy = shakeT > 0 ? (Math.random() - 0.5) * 8 * u : 0;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = '#1F1A16'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = map.palette.outside || '#1F1A16'; ctx.fillRect(0, 0, W, H);
     ctx.save(); ctx.translate(sx, sy);
     // map region
     const cx = Math.round(camX), cy = Math.round(camY);

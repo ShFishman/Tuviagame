@@ -164,7 +164,7 @@ state.onChange((what, extra) => {
 function goto(id, opts = {}) {
   if (id === 'world') return showWorld();
   const map = MAPS[id]; if (!map) return;
-  playing = false; inRush = false; ui.rushTimer(null);
+  playing = false; inRush = false; ui.rushTimer(null); ui.$('aside').hidden = true; ui.$('toasts').innerHTML = '';
   state.s.chapter = id; state.setMoodCap(map.moodCap || 100);
   const items = (state.s.chapterItems || {})[id] || [];
   ui.show('play'); world.resize();
