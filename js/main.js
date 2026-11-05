@@ -20,7 +20,15 @@ audio.setMuted(!!S.settings.muted); audio.setVolume(S.settings.volume == null ? 
 const styleEl = document.createElement('style'); styleEl.textContent = TUVIA_CSS; document.head.appendChild(styleEl);
 document.body.classList.toggle('hc', !!S.settings.highContrast);
 
-let level = null, comic = null, currentChapter = null, screenName = 'title', levelResults = null, isiAvailable = false;
+let level = null, comic = null, currentChapter = null, screenName = 'title', levelResults = null, isiAvailable = false, cardTimer = 0;
+/** Stop whatever is running (level loop, comic strip, title-card timer) before switching scenes. */
+function teardown() {
+  clearTimeout(cardTimer); cardTimer = 0;
+  if (level) { level.stop(); level = null; }
+  if (comic) { comic.destroy(); comic = null; }
+  const pm = $('#pause-menu'); if (pm) pm.classList.remove('show');
+  const tc = $('#title-card'); if (tc) tc.onclick = null;
+}
 
 // ---------- screens ----------
 function show(name) {
@@ -83,6 +91,7 @@ S.onChange((what) => { if (what === 'mood') audio.setMood(Math.min(100, S.state.
 // ---------- chapter flow ----------
 function startChapter(id) {
   const ch = CHAPTERS[id]; if (!ch) return;
+  teardown();
   currentChapter = ch; levelResults = null;
   S.state.disguise = 'none';
   S.setMoodCap(id === 'ch4' ? 120 : 100);
@@ -96,8 +105,8 @@ function startChapter(id) {
   $('#tc-title').textContent = ch.title; $('#tc-sub').textContent = ch.subtitle; $('#tc-caption').textContent = ch.card;
   $('#tc-art').innerHTML = establishingSVG(ch.scene);
   show('titlecard');
-  const go = () => { card.onclick = null; clearTimeout(go._t); runIntro(ch); };
-  card.onclick = go; go._t = setTimeout(go, 5200);
+  const go = () => { card.onclick = null; clearTimeout(cardTimer); cardTimer = 0; runIntro(ch); };
+  card.onclick = go; cardTimer = setTimeout(go, 5200);
   if (id === 'ch1') audio.cue('tease');
 }
 function establishingSVG(scene) {
@@ -122,6 +131,7 @@ async function callIsi(ch, btn) {
 }
 function runLevel(ch) {
   if (comic) { comic.destroy(); comic = null; }
+  if (level) { level.stop(); level = null; }
   show('level');
   renderHUD();
   const stage = $('#stage');
@@ -168,8 +178,7 @@ function runTaxi(ch, nextId) {
 
 // ---------- endings ----------
 function endGame(id) {
-  if (level) { level.stop(); level = null; }
-  if (comic) { comic.destroy(); comic = null; }
+  teardown();
   const e = S.recordEnding(id);
   renderEndingsGallery();
   show('ending');
@@ -234,8 +243,8 @@ function bind() {
   $$('.btn-back').forEach((b) => b.addEventListener('click', () => { renderTitle(); show('title'); }));
   $('#btn-pause').addEventListener('click', () => togglePause(true));
   $('#btn-resume').addEventListener('click', () => togglePause(false));
-  $('#btn-restart').addEventListener('click', () => { if (level) { level.stop(); } $('#pause-menu').classList.remove('show'); S.setMood(Math.max(S.state.mood, 30)); runLevel(currentChapter); });
-  $('#btn-quit').addEventListener('click', () => { if (level) { level.stop(); level = null; } $('#pause-menu').classList.remove('show'); audio.stopMusic(); renderTitle(); show('title'); });
+  $('#btn-restart').addEventListener('click', () => { teardown(); S.setMood(Math.max(S.state.mood, 30)); runLevel(currentChapter); });
+  $('#btn-quit').addEventListener('click', () => { teardown(); audio.stopMusic(); renderTitle(); show('title'); });
   $('#btn-pause-notebook').addEventListener('click', () => { renderNotebook(); $('#nb-back-level').hidden = false; show('notebook'); });
   $('#nb-back-level').addEventListener('click', () => { $('#nb-back-level').hidden = true; show('level'); });
   $('#btn-pause-isi').addEventListener('click', async () => { if (currentChapter && !S.state.isiCalled.includes(currentChapter.id)) { await callIsi(currentChapter, null); } $('#btn-pause-isi').hidden = true; });
@@ -285,5 +294,5 @@ window.__tuvia = {
   ending: (id) => endGame(id),
   decideEnding: () => S.decideEnding(false),
   save: () => S.save(), load: () => S.load(), reset: () => S.resetState(),
-  title: () => { if (level) { level.stop(); level = null; } renderTitle(); show('title'); },
+  title: () => { teardown(); renderTitle(); show('title'); },
 };
