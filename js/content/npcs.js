@@ -374,7 +374,7 @@ export const NPCS = {
   tzofia: {
     name: 'צופיה', title: 'תשעה ילדים, פודקאסט, ומגש. תמיד מגש.',
     look: { body: '#C9A227', skin: '#F7CFAE', hair: null, scarf: '#8E3B46', ladle: true, tray: 'quinoa' },
-    chase: { radius: 7, speed: 1.15, cooldown: 7, hazard: true },
+    chase: { radius: 7, speed: 0.88, cooldown: 7, hazard: true },
     entry: (c) => {
       if (c.talks === 0) return c.disguise === 'tobi' ? 'tobiStart' : c.disguise === 'bneibrak' ? 'bbStart' : c.disguise === 'guest' ? 'guestStart' : 'start';
       return 'more';
@@ -530,7 +530,7 @@ export const NPCS = {
   gittel: {
     name: 'הרבנית גיטל', title: 'בת 80. קטנה. מפחידה. הטבחית הכי טובה בעיר.',
     look: { body: '#6E1F2E', skin: '#F7CFAE', hair: '#4A2A14', hairStyle: 'wig', scale: 0.8, pot: true },
-    chase: { radius: 6, speed: 0.9, cooldown: 8, hazard: false },
+    chase: { radius: 6, speed: 0.72, cooldown: 8, hazard: false },
     entry: (c) => {
       if (c.flags.kishke) return ['fed1', 'fed2', 'fed3'][c.talks % 3];
       if (c.disguise === 'bneibrak') return 'bb';

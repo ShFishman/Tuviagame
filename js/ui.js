@@ -66,11 +66,11 @@ export function createUI() {
       a.hidden = false; a.classList.remove('fade'); a.innerHTML = bidi(text);
       asideTimer = setTimeout(() => { a.classList.add('fade'); asideTimer = setTimeout(() => { a.hidden = true; }, 500); }, ms);
     },
-    toast(text, cls = '') { const t = el('div', 'toast ' + cls, bidi(text)); $('toasts').appendChild(t); setTimeout(() => t.remove(), 2800); },
+    toast(text, cls = '') { const box = $('toasts'); while (box.children.length >= 3) box.firstChild.remove(); const t = el('div', 'toast ' + cls, bidi(text)); box.appendChild(t); setTimeout(() => t.remove(), 2800); },
     foodToast(food, delta, iconURL) {
       const t = el('div', 'toast food ' + (food.kind === 'bad' ? 'bad' : ''));
       t.innerHTML = `${iconURL ? `<img src="${iconURL}" alt="">` : ''}<span class="fname">${bidi(food.name)} <span class="fdelta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '+' : ''}${delta}</span></span><span class="fverdict">${bidi(food.verdict)}</span>`;
-      $('toasts').appendChild(t); setTimeout(() => t.remove(), 4300);
+      const box = $('toasts'); for (const old of [...box.querySelectorAll('.toast.food')].slice(0, -1)) old.remove(); while (box.children.length >= 3) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 4300);
     },
     prompt(html) { const p = $('prompt'); if (!html) { p.hidden = true; return; } p.hidden = false; p.innerHTML = html; },
     rushTimer(text) { const r = $('rush'); if (text == null) { r.hidden = true; return; } r.hidden = false; r.textContent = text; },

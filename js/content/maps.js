@@ -61,7 +61,7 @@ export const MAPS = {
       { at: [9, 14], r: 1.5, text: 'מונית. משה. שלט עם שם שהוא כמעט שלי. הדרך לירושלים מתחילה באברהם אבינו.', once: true },
     ],
     exitHint: 'המונית של משה בחוץ, דרך הדלת למטה. 🚕',
-    checklist: { ingredient: 'הסיר (שירה)', goat: 'העז (קרוסלה)' },
+    checklist: { ingredient: 'הסיר', goat: 'העז' },
   },
 
   settlement: {
@@ -120,7 +120,7 @@ export const MAPS = {
       { at: [21, 10], r: 1.2, text: 'מהנוף רואים את הכפר ממול. גם משם רואים אותנו. כולם רואים. אף אחד לא מדבר. חוץ מאלישיב.' },
     ],
     exitHint: 'הכביש למטה. משה מחכה. המונה גם. 🚕',
-    checklist: { ingredient: 'השעועית (גינה)', goat: 'העז (?)' },
+    checklist: { ingredient: 'השעועית', goat: 'העז' },
     onExit: (f) => (f.beansUnlocked && !f.tzofiaRoad ? { npc: 'tzofia', node: 'road' } : null),
   },
 
@@ -188,7 +188,7 @@ export const MAPS = {
       { at: [1, 13], r: 1.4, text: 'עגלת תאומים. מאחוריה: עגלת תאומים. אני מתחיל להבין את הדמוגרפיה. היא על גלגלים.' },
     ],
     exitHint: 'הרחוב למטה. משה אומר שהוא אסביר לי את 1967. 🚕',
-    checklist: { ingredient: 'הקישקע (הרבנית)', goat: 'העז (?)' },
+    checklist: { ingredient: 'הקישקע', goat: 'העז' },
   },
 
   finale: {
