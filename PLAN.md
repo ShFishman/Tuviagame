@@ -32,7 +32,7 @@ Create the git repo at `/home/sfish/Tuviagame` with a single file, **`SPEC.md`**
      - Disguises: identity switcher that changes NPC reactions.
      - Monologue: sarcastic asides in a different bubble style.
    - Visual spec is TBD until the photo arrives. The caricature keeps fixed props and an on-screen name tag so he can't be mistaken for anyone else.
-   - The photo stays out of the public repo (`.gitignore` `reference/`).
+   - The photo is committed at `reference/tuvia.png` (user request) and used only as a drawing reference.
 3. **Core systems, shared by design but implemented separately per branch.**
    - **Mood (0–100):** Ashkenazi food raises it. Health food, oat milk and hummus-with-a-lecture lower it.
    - **Book pages:** quotes collected from interviews.

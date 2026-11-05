@@ -69,7 +69,7 @@ Tuvia lands in Israel with a notebook, red glasses, green suspenders and a deadl
 | **Grumpy inner monologue** | 💭 **Aside bubbles**: thought bubbles in a different style (grey, cloud-shaped, handwritten font) that only the player sees | Constantly, including during gameplay in the arcade prototypes |
 
 ### 2.3 Visual spec (caricature)
-> Based on the user's reference photo, kept locally at `reference/tuvia.png`. The `reference/` folder is in `.gitignore`. **Never commit the photo to the public repo.** Implementers working locally may view it; cloud sessions use the description below.
+> Based on the user's reference photo, **`reference/tuvia.png`** (committed to the repo at the user's request). **Every session, local or cloud, should open the photo before drawing Tuvia.** It is a drawing reference only: the game shows the SVG caricature and never embeds the photo itself.
 
 **The look (from the photo):**
 
@@ -635,7 +635,7 @@ Dialogue lives in data files (JS/JSON objects) so text can be rewritten without 
 ---
 
 ## 11. Open items
-1. **📸 Tuvia's reference photo.** The user will provide it. ✅ Done. §2.3 was finalized from the photo, which is stored in `reference/tuvia.png` (git-ignored).
+1. **📸 Tuvia's reference photo.** The user will provide it. ✅ Done. §2.3 was finalized from the photo, `reference/tuvia.png`.
 2. **Public-figure list (§6.4).** User approves, edits or swaps for invented MKs.
 3. **Dialogue review.** User reviews sample lines for Tuvia-authenticity after the vertical slices.
 4. **Title.** Pick the final game name.
